@@ -316,6 +316,36 @@ function Sidebar({ active, onNav }) {
   );
 }
 
+function PaymentSidebar({ active, onNav }) {
+  const items = [
+    { id:"roomviewer3d", label:"3D View",          icon:"🧊" },
+    { id:"vizfeedback",  label:"Send Requirement", icon:"✉" },
+  ];
+  return (
+    <aside className="sb">
+      <div className="sb-logo">
+        <div className="sb-icon"><img src={logoImg} alt="Comforta logo" /></div>
+        <div>
+          <div className="sb-name">Comforta</div>
+          <div className="sb-sub">Customer Actions</div>
+        </div>
+      </div>
+      <nav className="sb-nav">
+        {items.map(it => (
+          <button key={it.id} className={`sn${active===it.id?" on":""}`} onClick={()=>onNav(it.id)}>
+            <span style={{fontSize:14,opacity:.9}}>{it.icon}</span>{it.label}
+          </button>
+        ))}
+      </nav>
+      <div className="sb-bot">
+        <button className="sb-bi" onClick={()=>onNav("checkout")}>
+          <span style={{fontSize:13}}>💳</span>&nbsp;Payment
+        </button>
+      </div>
+    </aside>
+  );
+}
+
 /* ─── TOPBAR ──────────────────────────────────────────────────────────────── */
 function TopBar({ onNav }) {
   return (
@@ -563,6 +593,7 @@ function CreateAccount({ onNav }) {
    ═══════════════════════════════════════════════════════════════════════════ */
 function VizFeedback({ onNav, trackedOrder, onOpen3D, onSubmitRequirements }) {
   const [notes,setNotes]=useState("");
+  const [reqSent,setReqSent]=useState(false);
   const order = trackedOrder || DEFAULT_TRACKED_ORDER;
   return (
     <div className="flex fdc" style={{minHeight:"100vh"}}>
@@ -597,13 +628,19 @@ function VizFeedback({ onNav, trackedOrder, onOpen3D, onSubmitRequirements }) {
                 className="vp-ta mb4"
                 placeholder="Example: I'd like the wood tone to be slightly lighter, closer to natural white oak. Also, can we try a different texture for the sofa fabric?"
                 value={notes}
-                onChange={e=>setNotes(e.target.value)}
+                onChange={e=>{setNotes(e.target.value); if (reqSent) setReqSent(false);}}
               />
               <button className="btn btn-dk btn-full" onClick={()=>{
                 if(!notes.trim()) return;
                 onSubmitRequirements(notes.trim(), order);
-                onNav("feedback");
+                setReqSent(true);
+                setNotes("");
               }}>Submit Requirements ▷</button>
+              {reqSent ? (
+                <div style={{marginTop:10,padding:"9px 12px",border:"1px solid #B7E4C7",background:"#EDF9F1",borderRadius:10,fontSize:12,fontWeight:600,color:"#1D7A46",textAlign:"center"}}>
+                  Requirement sent successfully.
+                </div>
+              ) : null}
               <div style={{fontSize:11,color:"var(--t3)",textAlign:"center",marginTop:8}}>Your designer will be notified immediately of these changes.</div>
               <div className="vp-detail-grid mt4">
                 <div><div className="vp-dl">Status</div><div className="vp-dv" style={{color:"var(--or)"}}>{order.status}</div></div>
@@ -1666,6 +1703,21 @@ export default function ComfortaApp() {
 
   // Pages that manage their own full layout (sidebar inside component)
   const selfContained=["login","login-success","createaccount","mydesigns","vizfeedback","success","newproject","step1","step2","step3","roomeditor","roomviewer3d"];
+
+  // Customer payment shell with simplified navigation
+  const paymentPages = ["checkout", "success"];
+  if(paymentPages.includes(page)){
+    return(
+      <>
+        <style>{G}</style>
+        <div className="app">
+          <PaymentSidebar active={page} onNav={nav}/>
+          <div className="main">{renderPage()}</div>
+        </div>
+      </>
+    );
+  }
+
   if(selfContained.includes(page)){
     return(
       <>
