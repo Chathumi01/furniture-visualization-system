@@ -22,6 +22,7 @@ import rectangle4280Img from "../assets/Rectangle 4280 (2).png";
 import image1ParenImg from "../assets/Image (1).png";
 import image2ParenImg from "../assets/Image (2).png";
 import decorativeElementImg from "../assets/Decorative Element.png";
+import transformImg from "../assets/Transform.png";
 
 /* ─── CSS ─────────────────────────────────────────────────────────────────── */
 const G = `
@@ -603,7 +604,6 @@ function CreateAccount({ onNav }) {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
@@ -792,107 +792,110 @@ function Checkout({ onNav }) {
   ];
 
   return (
-    <div className="pc fin">
-      <div className="ph">
-        <div>
-          <div className="pt">Complete your order</div>
-          <div className="ps">Finish your purchase by providing your payment details and billing address.</div>
+    <div style={{ minHeight: "100vh", background: "#FCF6EA", padding: 0 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 0 0 0" }}>
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ fontSize: 32, fontWeight: 800, color: "#1A1A1A", marginBottom: 6 }}>Complete your order</div>
+          <div style={{ fontSize: 16, color: "#6B7280" }}>Finish your purchase by providing your payment details and billing address.</div>
         </div>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 360px",gap:28}}>
-        {/* Left */}
-        <div className="flex fdc gap5">
-          {/* Payment method */}
-          <div>
-            <div className="flex ic gap2 mb4"><span style={{fontSize:20}}>💳</span><span style={{fontSize:17,fontWeight:700}}>Payment Method</span></div>
-            <div className="flex fdc gap3">
-              {methods.map(m=>(
-                <div key={m.id} className={`ro${pay===m.id?" on":""}`} onClick={()=>setPay(m.id)}>
-                  <div className={`rd-dot${pay===m.id?" on":""}`}/>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:14,fontWeight:600}}>{m.label}</div>
-                    <div style={{fontSize:12,color:"var(--t2)"}}>{m.sub}</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 40 }}>
+          {/* Left: Payment, Card, Address in one card */}
+          <div style={{ background: "#fff", borderRadius: 20, border: "1px solid #F1DAB8", boxShadow: "0 8px 24px rgba(28,28,30,0.08)", padding: 36, display: "flex", flexDirection: "column", gap: 32 }}>
+            {/* Payment method */}
+            <div>
+              <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 22 }}>💳</span> Payment Method
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {methods.map(m => (
+                  <div key={m.id} className={`ro${pay === m.id ? " on" : ""}`} style={{ margin: 0 }} onClick={() => setPay(m.id)}>
+                    <div className={`rd-dot${pay === m.id ? " on" : ""}`}/>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 15, fontWeight: 600 }}>{m.label}</div>
+                      <div style={{ fontSize: 13, color: "#6B7280" }}>{m.sub}</div>
+                    </div>
+                    <span style={{ fontSize: 20, color: "#9CA3AF" }}>{m.icon}</span>
                   </div>
-                  <span style={{fontSize:20,color:"var(--t3)"}}>{m.icon}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-          {/* Card details */}
-          {pay==="card"&&(
-            <div className="card cp">
-              <div style={{fontSize:16,fontWeight:700,marginBottom:16}}>Card Details</div>
+            {/* Card details */}
+            {pay === "card" && (
+              <div>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Card Details</div>
+                <div className="flex fdc gap4">
+                  <div className="fg">
+                    <label className="fl" style={{ fontSize: 12 }}>CARDHOLDER NAME *</label>
+                    <input className="fi" value={card.name} onChange={e => setCard(c => ({ ...c, name: e.target.value }))} placeholder="Johnathan Doe" />
+                  </div>
+                  <div className="fg">
+                    <label className="fl" style={{ fontSize: 12 }}>CARD NUMBER</label>
+                    <div style={{ position: "relative" }}>
+                      <span style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", fontSize: 16 }}>💳</span>
+                      <input className={`fi${cardErr ? " err" : ""}`} style={{ paddingLeft: 34 }} value={card.num} onChange={e => { setCard(c => ({ ...c, num: e.target.value })); setCardErr(false); }} placeholder="0000 0000 0000 0000" />
+                    </div>
+                    {cardErr && <div className="fe">Please enter a valid card number</div>}
+                  </div>
+                  <div className="g2">
+                    <div className="fg">
+                      <label className="fl" style={{ fontSize: 12 }}>EXPIRY DATE *</label>
+                      <input className="fi" value={card.exp} onChange={e => setCard(c => ({ ...c, exp: e.target.value }))} placeholder="MM / YY" />
+                    </div>
+                    <div className="fg">
+                      <label className="fl" style={{ fontSize: 12 }}>CVV *</label>
+                      <input className="fi" value={card.cvv} onChange={e => setCard(c => ({ ...c, cvv: e.target.value }))} placeholder="123" />
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>* Required Fields</div>
+                </div>
+              </div>
+            )}
+            {/* Billing address */}
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, marginTop: 8 }}>Billing Address</div>
               <div className="flex fdc gap4">
                 <div className="fg">
-                  <label className="fl" style={{fontSize:11}}>CARDHOLDER NAME *</label>
-                  <input className="fi" value={card.name} onChange={e=>setCard(c=>({...c,name:e.target.value}))} placeholder="Johnathan Doe"/>
-                </div>
-                <div className="fg">
-                  <label className="fl" style={{fontSize:11}}>CARD NUMBER</label>
-                  <div style={{position:"relative"}}>
-                    <span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",fontSize:16}}>💳</span>
-                    <input className={`fi${cardErr?" err":""}`} style={{paddingLeft:34}} value={card.num} onChange={e=>{setCard(c=>({...c,num:e.target.value}));setCardErr(false);}} placeholder="0000 0000 0000 0000"/>
-                  </div>
-                  {cardErr&&<div className="fe">Please enter a valid card number</div>}
+                  <label className="fl" style={{ fontSize: 12 }}>STREET ADDRESS *</label>
+                  <input className="fi" value={addr.street} onChange={e => setAddr(a => ({ ...a, street: e.target.value }))} />
                 </div>
                 <div className="g2">
                   <div className="fg">
-                    <label className="fl" style={{fontSize:11}}>EXPIRY DATE *</label>
-                    <input className="fi" value={card.exp} onChange={e=>setCard(c=>({...c,exp:e.target.value}))} placeholder="MM / YY"/>
+                    <label className="fl" style={{ fontSize: 12 }}>CITY</label>
+                    <input className="fi" value={addr.city} onChange={e => setAddr(a => ({ ...a, city: e.target.value }))} />
                   </div>
                   <div className="fg">
-                    <label className="fl" style={{fontSize:11}}>CVV *</label>
-                    <input className="fi" value={card.cvv} onChange={e=>setCard(c=>({...c,cvv:e.target.value}))} placeholder="123"/>
+                    <label className="fl" style={{ fontSize: 12 }}>POSTAL CODE *</label>
+                    <input className="fi" value={addr.postal} onChange={e => setAddr(a => ({ ...a, postal: e.target.value }))} />
                   </div>
                 </div>
-                <div style={{fontSize:11,color:"var(--t3)"}}>* Required Fields</div>
-              </div>
-            </div>
-          )}
-          {/* Billing address */}
-          <div className="card cp">
-            <div style={{fontSize:16,fontWeight:700,marginBottom:16}}>Billing Address</div>
-            <div className="flex fdc gap4">
-              <div className="fg">
-                <label className="fl" style={{fontSize:11}}>STREET ADDRESS *</label>
-                <input className="fi" value={addr.street} onChange={e=>setAddr(a=>({...a,street:e.target.value}))}/>
-              </div>
-              <div className="g2">
-                <div className="fg">
-                  <label className="fl" style={{fontSize:11}}>CITY</label>
-                  <input className="fi" value={addr.city} onChange={e=>setAddr(a=>({...a,city:e.target.value}))}/>
-                </div>
-                <div className="fg">
-                  <label className="fl" style={{fontSize:11}}>POSTAL CODE *</label>
-                  <input className="fi" value={addr.postal} onChange={e=>setAddr(a=>({...a,postal:e.target.value}))}/>
-                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* Right – Order Summary */}
-        <div className="card cp" style={{alignSelf:"start",position:"sticky",top:20}}>
-          <div style={{fontSize:17,fontWeight:700,marginBottom:16}}>Order Summary</div>
-          {items.map(i=>(
-            <div key={i.name} className="oi">
-              <div className="oi-img"><img src={i.img} alt={i.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display='none';}}/></div>
-              <div>
-                <div className="oi-name">{i.name}</div>
-                <div className="oi-var">{i.variant}</div>
-                <div className="oi-pr">{i.price}</div>
+          {/* Right – Order Summary */}
+          <div style={{ background: "#fff", borderRadius: 20, border: "1px solid #F1DAB8", boxShadow: "0 8px 24px rgba(28,28,30,0.08)", padding: 32, alignSelf: "start", position: "sticky", top: 32, minWidth: 320 }}>
+            <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 18 }}>Order Summary</div>
+            {items.map(i => (
+              <div key={i.name} style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 18 }}>
+                <div style={{ width: 70, height: 70, borderRadius: 12, overflow: "hidden", background: "#F3F4F6", flexShrink: 0 }}>
+                  <img src={i.img} alt={i.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display = 'none'; }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>{i.name}</div>
+                  <div style={{ fontSize: 13, color: "#6B7280", marginBottom: 2 }}>{i.variant}</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>{i.price}</div>
+                </div>
               </div>
-            </div>
-          ))}
-          <div className="mt3">
-            <div className="ot-row"><span>Subtotal</span><span>$1,700.00</span></div>
-            <div className="ot-row"><span>Shipping (Standard)</span><span>$45.00</span></div>
-            <div className="ot-row"><span>Estimated Tax</span><span>$136.00</span></div>
-            <div className="ot-total"><span>Total</span><span>$1,881.00</span></div>
+            ))}
+            <div style={{ borderTop: "1px solid #E5E7EB", margin: "18px 0 12px" }} />
+            <div style={{ fontSize: 15, color: "#6B7280", display: "flex", justifyContent: "space-between", marginBottom: 6 }}><span>Subtotal</span><span>$1,700.00</span></div>
+            <div style={{ fontSize: 15, color: "#6B7280", display: "flex", justifyContent: "space-between", marginBottom: 6 }}><span>Shipping (Standard)</span><span>$45.00</span></div>
+            <div style={{ fontSize: 15, color: "#6B7280", display: "flex", justifyContent: "space-between", marginBottom: 10 }}><span>Estimated Tax</span><span>$136.00</span></div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "#1A1A1A", display: "flex", justifyContent: "space-between", marginBottom: 18 }}><span>Total</span><span>$1,881.00</span></div>
+            <button className="btn btn-or btn-full btn-lg" style={{ fontSize: 16, height: 48, marginBottom: 8 }} onClick={() => { if (!card.num && pay === "card") { setCardErr(true); return; } onNav("success"); }}>
+              🔒 Complete Purchase
+            </button>
+            <div style={{ textAlign: "center", fontSize: 12, color: "#9CA3AF", marginTop: 8 }}>🛡 SSL Secured &amp; Encrypted Checkout</div>
           </div>
-          <button className="btn btn-or btn-full btn-lg mt4" onClick={()=>{if(!card.num&&pay==="card"){setCardErr(true);return;}onNav("success");}}>
-            🔒 Complete Purchase
-          </button>
-          <div style={{textAlign:"center",fontSize:11,color:"var(--t3)",marginTop:8}}>🛡 SSL Secured &amp; Encrypted Checkout</div>
         </div>
       </div>
     </div>
@@ -948,8 +951,8 @@ function PaymentSuccess({ onNav }) {
           </div>
         </div>
         <div className="flex ic gap3">
-          <button className="btn btn-or btn-lg" onClick={()=>onNav("mydesigns")}>📦 Track Order</button>
-          <button className="btn btn-out btn-lg" onClick={()=>onNav("dashboard")}>🏠 Return to Dashboard</button>
+          <button className="btn btn-or btn-lg" onClick={()=>onNav("TrackOrder")}>📦 Track Order</button>
+          <button className="btn btn-out btn-lg" onClick={()=>onNav("about")}>🏠 Return to Dashboard</button>
         </div>
         <div style={{fontSize:12,color:"var(--t3)",marginTop:10}}>A confirmation email has been sent to your registered email address.</div>
         <div style={{fontSize:13,color:"var(--t2)",marginTop:14}}>
@@ -1348,7 +1351,7 @@ function AboutUs({ onNav }) {
   }
 
   return (
-    <div style={{ background: "#FFFFFF", fontFamily: "'Inter', sans-serif", color: "#1A1A1A" }}>
+    <div style={{ background: "#FBF5E8", fontFamily: "'Inter', sans-serif", color: "#1A1A1A" }}>
       <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB", padding: "0 40px", height: 60, display: "flex", alignItems: "center", gap: 12 }}>
         <div
           style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
@@ -1364,8 +1367,57 @@ function AboutUs({ onNav }) {
         </div>
       </div>
 
+      {/* ── Customer's Page Portal Section ───────────────────────────────── */}
+      <div style={{ background: "#F5F0E6", borderBottom: "1px solid #E5E7EB" }}>
+
+        {/* Description banner */}
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "28px 40px 20px" }}>
+          <div style={{ borderLeft: "4px solid #F5A623", paddingLeft: 20, color: "#374151", fontSize: 14, lineHeight: 1.75 }}>
+            As a customer, you can view your shared projects, track orders, and make payments through your dedicated Client Portal.
+          </div>
+        </div>
+
+        {/* My Designs grid */}
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "8px 40px 52px" }}>
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: "#0D0D0D", marginBottom: 6 }}>My Designs</div>
+            <div style={{ fontSize: 14, color: "#6B7280" }}>Manage and evolve your bespoke interior spaces</div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 22 }}>
+            {[
+              { name: "Modern  Living Room", client: "Sarah Johnson",    icon: "👤", time: "1 day ago",   img: container1Img },
+              { name: "Oak Office Suite",              client: "TechCorp HQ",      icon: "🏢", time: "1 day ago",   img: containerImg  },
+              { name: "Scandinavian Bedroom",          client: "Mikael Blomkvist", icon: "👤", time: "3 days ago",  img: image1Img     },
+              { name: "Industrial Kitchen",            client: "Urban Lofts",      icon: "🏢", time: "1 week ago",  img: imageImg      },
+            ].map(d => (
+              <div key={d.name} style={{ background: "#fff", borderRadius: 14, overflow: "hidden", boxShadow: "0 2px 14px rgba(0,0,0,0.07)" }}>
+                <div style={{ height: 162, overflow: "hidden" }}>
+                  <img src={d.img} alt={d.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    onError={e => { e.target.style.background = "#E5E7EB"; }}
+                  />
+                </div>
+                <div style={{ padding: "14px 16px 16px" }}>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#0D0D0D", marginBottom: 7, lineHeight: 1.3 }}>{d.name}</div>
+                  <div style={{ fontSize: 12, color: "#6B7280", marginBottom: 4 }}>{d.icon} {d.client}</div>
+                  <div style={{ fontSize: 12, color: "#6B7280", marginBottom: 14 }}>🕐 Last Edited: {d.time}</div>
+                  <button
+                    style={{ width: "100%", padding: "9px 0", background: "#fff", border: "1px solid #D1D5DB", borderRadius: 8, fontSize: 13, fontWeight: 600, color: "#374151", cursor: "pointer" }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "#F9FAFB"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "#fff"; }}
+                    onClick={() => onNav && onNav("vizfeedback")}
+                  >
+                    View Only
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <section style={{
-        background: "#F5F0E2",
+        background: "#FBF5E8",
         minHeight: "88vh",
         display: "flex",
         alignItems: "center",
@@ -1388,7 +1440,7 @@ function AboutUs({ onNav }) {
 
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 style={{
-            fontSize: "clamp(48px, 6.5vw, 88px)",
+            fontSize: "clamp(48px, 6.5vw, 70px)",
             fontWeight: 800,
             lineHeight: 1.08,
             letterSpacing: "-0.02em",
@@ -1413,7 +1465,7 @@ function AboutUs({ onNav }) {
         </div>
       </section>
 
-      <section style={{ padding: "64px 40px 72px", maxWidth: 1100, margin: "0 auto" }}>
+      <section style={{ padding: "64px 40px 70px", maxWidth: 1100, margin: "0 auto" }}>
         <h2 style={{ fontSize: 38, fontWeight: 800, color: "#0D0D0D", marginBottom: 6, lineHeight: 1.1 }}>OUR BLOG</h2>
         <p style={{ fontSize: 14, color: "#6B7280", marginBottom: 40, lineHeight: 1.6 }}>
           Ideas &amp; inspiration for creating warm, comfortable living spaces.
@@ -1429,7 +1481,7 @@ function AboutUs({ onNav }) {
                 <img
                   src={b.img} alt={b.title}
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .35s ease" }}
-                  onError={e => { e.target.style.background = "#E5E7EB"; e.target.style.display = "block"; }}
+                  onError={e => { e.target.style.background = "#FBF5E8"; e.target.style.display = "block"; }}
                 />
               </div>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: b.tagColor, marginBottom: 8 }}>{b.tag}</div>
@@ -1446,12 +1498,26 @@ function AboutUs({ onNav }) {
         </div>
       </section>
 
-      <section style={{ background: "#FEF3E2", padding: "56px 40px" }}>
-        <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
-          <h3 style={{ fontSize: 26, fontWeight: 800, color: "#0D0D0D", marginBottom: 12, lineHeight: 1.25 }}>
+      <section style={{ background: "#FBF5E8", padding: "56px 40px" }}>
+        <div
+          style={{
+            maxWidth: 980,
+            margin: "0 auto",
+            textAlign: "center",
+            background: "linear-gradient(135deg, #EC5B131A 0%, #FFF2DD 100%)",
+            border: "1px solid #F1DAB8",
+            borderRadius: 20,
+            boxShadow: "0 8px 24px rgba(28, 28, 30, 0.08)",
+            padding: "44px 32px",
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".11em", textTransform: "uppercase", color: "#DC9018", marginBottom: 10 }}>
+            Newsletter
+          </div>
+          <h3 style={{ fontSize: 30, fontWeight: 800, color: "#0D0D0D", marginBottom: 12, lineHeight: 1.25 }}>
             Join our design community
           </h3>
-          <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7, marginBottom: 28 }}>
+          <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7, marginBottom: 28, maxWidth: 620, marginInline: "auto" }}>
             Get the latest design tips, exclusive offers, and behind-the-scenes stories delivered to your inbox every week.
           </p>
 
@@ -1461,7 +1527,7 @@ function AboutUs({ onNav }) {
             </div>
           ) : (
             <>
-              <div style={{ display: "flex", gap: 8, maxWidth: 420, margin: "0 auto 14px" }}>
+              <div style={{ display: "flex", gap: 8, maxWidth: 460, margin: "0 auto 14px" }}>
                 <input
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -1486,7 +1552,7 @@ function AboutUs({ onNav }) {
         </div>
       </section>
 
-      <section style={{ background: "#FAF7F0", padding: "72px 40px 60px" }}>
+      <section style={{ background: "#FBF5E8", padding: "72px 40px 60px" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <h2 style={{ fontSize: 40, fontWeight: 800, color: "#0D0D0D", letterSpacing: ".04em", marginBottom: 12 }}>CONTACT US</h2>
           <div style={{ width: 48, height: 3, background: "#F5A623", borderRadius: 2, margin: "0 auto 18px" }} />
@@ -1575,10 +1641,384 @@ function AboutUs({ onNav }) {
         </div>
       </section>
 
-      <Footer />
+      {/* ══════════════════════════════════════════
+          CTA BANNER — Transform Your Living Space
+      ══════════════════════════════════════════ */}
+      <section style={{ background:"#fffff", padding:"0 40px 64px" }}>
+        {/* Breadcrumb */}
+        <div style={{ fontSize:12, color:"#9CA3AF", marginBottom:16, paddingTop:4 }}>
+          <span style={{ cursor:"pointer" }}
+            onMouseEnter={e=>e.currentTarget.style.color="#F5A623"}
+            onMouseLeave={e=>e.currentTarget.style.color="#9CA3AF"}
+          >Home</span>
+          <span style={{ margin:"0 6px" }}>›</span>
+          <span style={{ color:"#6B7280" }}>Explore</span>
+        </div>
+
+        {/* Banner card */}
+        <div style={{
+          background:"#FBF5E8",
+          borderRadius:20,
+          border:"1px solid #E5E7EB",
+          overflow:"hidden",
+          display:"grid",
+          gridTemplateColumns:"1fr 1fr",
+          minHeight:220,
+          boxShadow:"0 2px 16px rgba(0,0,0,0.06)",
+        }}>
+          {/* LEFT — text content */}
+          <div style={{
+            padding:"48px 40px 48px 48px",
+            display:"flex", flexDirection:"column",
+            justifyContent:"center", gap:16,
+          }}>
+            <h2 style={{
+              fontSize:"clamp(22px,2.5vw,30px)",
+              fontWeight:800, color:"#0D1F3C",
+              lineHeight:1.25, marginBottom:4,
+            }}>
+              Transform Your Living<br/>Space Today
+            </h2>
+            <p style={{
+              fontSize:13, color:"#6B7280",
+              lineHeight:1.7, maxWidth:280,
+            }}>
+              Discover furniture crafted to enhance comfort and elevate your home experience, bringing warmth and style into everyday living.
+            </p>
+
+            {/* Amber CTA button */}
+            <div>
+              <button
+                onClick={() => onNav && onNav("step3")}
+                style={{
+                  display:"inline-flex", alignItems:"center", gap:8,
+                  padding:"11px 24px", background:"#F5A623",
+                  color:"#fff", border:"none", borderRadius:50,
+                  fontSize:13, fontWeight:700, cursor:"pointer",
+                  fontFamily:"inherit", transition:"background .15s",
+                  boxShadow:"0 4px 14px rgba(245,166,35,0.3)",
+                }}
+                onMouseEnter={e=>e.currentTarget.style.background="#DC9018"}
+                onMouseLeave={e=>e.currentTarget.style.background="#F5A623"}
+              >
+                Explore Furniture
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                  <path d="M2 7.5h11M9 3.5l4 4-4 4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Checkmark badge */}
+            <div style={{ display:"flex", alignItems:"center", gap:7, marginTop:2 }}>
+              <div style={{
+                width:20, height:20, borderRadius:"50%",
+                background:"#F5A623",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                flexShrink:0,
+              }}>
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5l2 2 4-4" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <span style={{ fontSize:12, color:"#6B7280", fontWeight:500 }}>Crafted with premium materials</span>
+            </div>
+          </div>
+
+          {/* RIGHT — illustration */}
+          <div style={{
+            background:"#FBF5E8",
+            display:"flex", alignItems:"center", justifyContent:"center",
+            padding:24, position:"relative", overflow:"hidden",
+          }}>
+            <img
+              src={transformImg}
+              alt="Transform your living space"
+              style={{
+                width:"100%",
+                height:"100%",
+                maxHeight:22000,
+                objectFit:"contain",
+                position:"relative",
+                zIndex:2,
+              }}
+            />
+          </div>
+        </div>
+      </section>
+<Footer/>
     </div>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRACK ORDER PAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+function TrackOrder({ onNav }) {
+  const steps = [
+    { label:"Order Placed",     sub:"Oct 24, 09:30 AM", done:true,  active:false },
+    { label:"Processing",       sub:"Oct 24, 02:15 PM", done:true,  active:false },
+    { label:"In Transit",       sub:"Oct 25, 08:00 AM", done:false, active:true  },
+    { label:"Out for Delivery", sub:"Estimated Today",  done:false, active:false },
+    { label:"Delivered",        sub:"Expected Oct 26",  done:false, active:false },
+  ];
+
+  const items = [
+    { name:"Nordic Oak Lounge Chair", variant:"Natural / Wool Gray", qty:1, price:"$850.00", sku:"CH-88012",
+      img:"https://images.unsplash.com/photo-1592078615290-033ee584e267?w=200&q=80" },
+    { name:"Minimalist Side Table",   variant:"Walnut / Black Metal",  qty:2, price:"$440.00", sku:"TB-11094",
+      img:"https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=200&q=80" },
+  ];
+
+  /* SVG step icons */
+  function StepIcon({ type, done, active }) {
+    const bg  = done||active ? "#F5A623" : "#E5E7EB";
+    const col = done||active ? "#fff"    : "#9CA3AF";
+    const icons = {
+      check:  <path d="M5 10l3.5 3.5L16 7" stroke={col} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>,
+      doc:    <><rect x="6" y="4" width="10" height="14" rx="2" stroke={col} strokeWidth="1.8"/><path d="M9 9h4M9 12h4" stroke={col} strokeWidth="1.5" strokeLinecap="round"/></>,
+      truck:  <><rect x="2" y="8" width="13" height="9" rx="1.5" stroke={col} strokeWidth="1.7"/><path d="M15 11h3l2 3v3h-5V11z" stroke={col} strokeWidth="1.7" strokeLinejoin="round"/><circle cx="6"  cy="19" r="1.8" stroke={col} strokeWidth="1.5"/><circle cx="18" cy="19" r="1.8" stroke={col} strokeWidth="1.5"/></>,
+      pin:    <><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke={col} strokeWidth="1.7"/><circle cx="12" cy="9" r="2.5" stroke={col} strokeWidth="1.5"/></>,
+      circle: <><circle cx="12" cy="12" r="8" stroke={col} strokeWidth="1.7"/><path d="M9 12l2 2 4-4" stroke={col} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></>,
+    };
+    const iconTypes = ["check","doc","truck","pin","circle"];
+    return (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        {icons[type]}
+      </svg>
+    );
+  }
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#FAF7F0", fontFamily:"'Inter',sans-serif" }}>
+
+      {/* ── HEADER ── */}
+      <div style={{ background:"#FAF7F0", borderBottom:"1px solid #E5E7EB", padding:"16px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+          <button onClick={()=>onNav("mydesigns")} style={{ width:36, height:36, borderRadius:"50%", border:"1.5px solid #E5E7EB", background:"#fff", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <div>
+            <div style={{ fontSize:22, fontWeight:800, color:"#0D1F3C", lineHeight:1 }}>Order #ORD-8821</div>
+            <div style={{ fontSize:12, color:"#9CA3AF", marginTop:4 }}>Placed on October 24, 2023 at 09:30 AM</div>
+          </div>
+        </div>
+        <div style={{ display:"flex", gap:10 }}>
+          <button style={{ display:"flex", alignItems:"center", gap:7, padding:"9px 18px", border:"1.5px solid #E5E7EB", borderRadius:8, background:"#fff", fontSize:13, fontWeight:600, color:"#374151", cursor:"pointer", fontFamily:"inherit" }}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 2h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.5"/><path d="M5 6h6M5 9h6M5 12h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+            Print Invoice
+          </button>
+          <button style={{ padding:"9px 22px", background:"#F5A623", border:"none", borderRadius:8, fontSize:13, fontWeight:700, color:"#fff", cursor:"pointer", fontFamily:"inherit" }}>
+            Support
+          </button>
+        </div>
+      </div>
+
+      <div style={{ padding:"24px 28px", maxWidth:1100, margin:"0 auto" }}>
+
+        {/* ── PROGRESS STEPPER ── */}
+        <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", padding:"28px 32px", marginBottom:20, boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", position:"relative" }}>
+            {/* connector line behind icons */}
+            <div style={{ position:"absolute", top:22, left:"10%", right:"10%", height:3, background:"#E5E7EB", zIndex:0 }}/>
+            <div style={{ position:"absolute", top:22, left:"10%", width:"42%", height:3, background:"#F5A623", zIndex:1 }}/>
+
+            {steps.map((s, i) => {
+              const iconTypes = ["check","doc","truck","pin","circle"];
+              const bg  = s.done ? "#F5A623" : s.active ? "#F5A623" : "#fff";
+              const border = s.done||s.active ? "none" : "2px solid #E5E7EB";
+              return (
+                <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, position:"relative", zIndex:2 }}>
+                  <div style={{ width:44, height:44, borderRadius:"50%", background:bg, border, display:"flex", alignItems:"center", justifyContent:"center", boxShadow: s.done||s.active ? "0 2px 8px rgba(245,166,35,0.4)" : "none" }}>
+                    <StepIcon type={iconTypes[i]} done={s.done} active={s.active}/>
+                  </div>
+                  <div style={{ textAlign:"center" }}>
+                    <div style={{ fontSize:13, fontWeight:700, color: s.done||s.active ? "#0D1F3C" : "#9CA3AF" }}>{s.label}</div>
+                    <div style={{ fontSize:11, color:"#9CA3AF", marginTop:2 }}>{s.sub}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── MAIN 2-COL ── */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 340px", gap:20 }}>
+
+          {/* LEFT COLUMN */}
+          <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
+
+            {/* MAP CARD */}
+            <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+              <div style={{ padding:"16px 20px 12px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <span style={{ fontSize:18 }}>🗺</span>
+                  <span style={{ fontSize:15, fontWeight:700, color:"#0D1F3C" }}>Current Location</span>
+                </div>
+                <span style={{ fontSize:11, fontWeight:700, letterSpacing:".08em", color:"#F5A623", border:"1px solid #F5A623", borderRadius:20, padding:"3px 10px" }}>LIVE TRACKING</span>
+              </div>
+
+              {/* Map placeholder with Copenhagen city art */}
+              <div style={{ position:"relative", height:320, background:"#E8E4DC", overflow:"hidden" }}>
+                {/* Road network SVG mock map */}
+                <svg width="100%" height="100%" viewBox="0 0 600 320" preserveAspectRatio="xMidYMid slice" style={{ position:"absolute", inset:0 }}>
+                  {/* Map background */}
+                  <rect width="600" height="320" fill="#E8E3D8"/>
+                  {/* Water */}
+                  <ellipse cx="480" cy="200" rx="160" ry="120" fill="#BFD8E8" opacity="0.6"/>
+                  {/* Parks */}
+                  <ellipse cx="280" cy="100" rx="40" ry="25" fill="#C8D8A8" opacity="0.8"/>
+                  <ellipse cx="160" cy="180" rx="30" ry="20" fill="#C8D8A8" opacity="0.7"/>
+                  {/* Major roads */}
+                  {[
+                    "M0 100 Q150 95 300 110 Q450 125 600 120",
+                    "M0 180 Q200 170 300 175 Q450 180 600 175",
+                    "M0 250 Q150 245 300 250 Q450 255 600 248",
+                    "M150 0 Q155 100 160 200 Q162 260 165 320",
+                    "M280 0 Q285 80 290 160 Q292 240 295 320",
+                    "M420 0 Q425 100 430 200 Q432 260 435 320",
+                    "M60 0 Q62 80 65 160 Q66 240 68 320",
+                    "M520 0 Q522 80 525 160",
+                  ].map((d,i)=>(
+                    <path key={i} d={d} stroke="#fff" strokeWidth={i<4?6:4} fill="none" opacity="0.9"/>
+                  ))}
+                  {/* Minor roads */}
+                  {[
+                    "M0 60 Q300 55 600 62","M0 220 Q300 215 600 222",
+                    "M100 0 Q102 160 104 320","M360 0 Q362 160 364 320",
+                    "M480 0 Q482 120 484 240",
+                  ].map((d,i)=>(
+                    <path key={i} d={d} stroke="#fff" strokeWidth="2.5" fill="none" opacity="0.6"/>
+                  ))}
+                  {/* City labels */}
+                  {[
+                    [80,  95,  "NØRREBRO"],
+                    [230, 145, "INDRE BY"],
+                    [295, 185, "Copenhagen"],
+                    [95,  210, "Frederiksberg"],
+                    [350, 245, "Amagerbro"],
+                    [130, 278, "VALBY"],
+                  ].map(([x,y,t],i)=>(
+                    <text key={i} x={x} y={y} fontSize={i===2?15:10} fontWeight={i===2?600:400} fill="#5A5040" fontFamily="Inter,sans-serif" opacity={i===2?1:0.8}>{t}</text>
+                  ))}
+                  {/* Orange glow pulse around truck */}
+                  <circle cx="240" cy="185" r="55" fill="#F5A623" opacity="0.12"/>
+                  <circle cx="240" cy="185" r="38" fill="#F5A623" opacity="0.18"/>
+                </svg>
+
+                {/* Truck pin */}
+                <div style={{ position:"absolute", top:"50%", left:"40%", transform:"translate(-50%,-50%)", zIndex:3 }}>
+                  <div style={{ width:44, height:44, borderRadius:"50%", background:"#F5A623", border:"3px solid #fff", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 4px 16px rgba(245,166,35,0.6)", fontSize:20 }}>🚚</div>
+                </div>
+              </div>
+            </div>
+
+            {/* ORDER ITEMS CARD */}
+            <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", padding:"22px 24px", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+              <div style={{ fontSize:16, fontWeight:700, color:"#0D1F3C", marginBottom:20 }}>Order Items</div>
+              {items.map((item, i) => (
+                <div key={i} style={{ display:"flex", alignItems:"center", gap:16, padding:"16px 0", borderBottom: i < items.length-1 ? "1px solid #F3F4F6" : "none" }}>
+                  <div style={{ width:80, height:80, borderRadius:10, background:"#F9FAFB", border:"1px solid #E5E7EB", overflow:"hidden", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <img src={item.img} alt={item.name} style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e=>{e.target.style.display="none";}}/>
+                  </div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:15, fontWeight:700, color:"#0D1F3C", marginBottom:3 }}>{item.name}</div>
+                    <div style={{ fontSize:12, color:"#9CA3AF", marginBottom:3 }}>{item.variant}</div>
+                    <div style={{ fontSize:12, color:"#6B7280" }}>Quantity: {item.qty}</div>
+                  </div>
+                  <div style={{ textAlign:"right", flexShrink:0 }}>
+                    <div style={{ fontSize:17, fontWeight:800, color:"#0D1F3C" }}>{item.price}</div>
+                    <div style={{ fontSize:11, color:"#9CA3AF", marginTop:3 }}>SKU: {item.sku}</div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Footer total row */}
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:16, marginTop:4, borderTop:"1px solid #F3F4F6" }}>
+                <div style={{ fontSize:13, color:"#6B7280" }}>3 items total</div>
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <span style={{ fontSize:13, color:"#6B7280" }}>Total Paid</span>
+                  <span style={{ fontSize:20, fontWeight:800, color:"#F5A623" }}>$1,290.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+
+            {/* ESTIMATED DELIVERY CARD */}
+            <div style={{ background:"#F5A623", borderRadius:14, padding:"24px", boxShadow:"0 4px 16px rgba(245,166,35,0.3)" }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:"rgba(255,255,255,0.75)", marginBottom:10 }}>ESTIMATED DELIVERY</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:16 }}>
+                <span style={{ fontSize:36, fontWeight:800, color:"#fff", lineHeight:1 }}>Today</span>
+                <span style={{ fontSize:16, fontWeight:500, color:"rgba(255,255,255,0.85)" }}>by 5:00 PM</span>
+              </div>
+              <p style={{ fontSize:13, color:"rgba(255,255,255,0.85)", lineHeight:1.65 }}>
+                Your package is on its way with our premium courier and is currently 15 minutes away from your location.
+              </p>
+            </div>
+
+            {/* SHIPPING INFO CARD */}
+            <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", padding:"22px", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+              <div style={{ fontSize:16, fontWeight:700, color:"#0D1F3C", marginBottom:20 }}>Shipping Information</div>
+              {[
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="#9CA3AF" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+                  label:"RECIPIENT",
+                  lines:["Sarah Andersson", "+45 23 45 67 89"],
+                },
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.75 4.5 8.5 4.5 8.5S12.5 9.75 12.5 6c0-2.485-2.015-4.5-4.5-4.5z" stroke="#9CA3AF" strokeWidth="1.5"/><circle cx="8" cy="6" r="1.5" stroke="#9CA3AF" strokeWidth="1.3"/></svg>,
+                  label:"DELIVERY ADDRESS",
+                  lines:["Østerbrogade 125, 3. th", "2100 Copenhagen Ø", "Denmark"],
+                },
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="#9CA3AF" strokeWidth="1.5"/><path d="M11 7h2l2 2.5V12h-4V7z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="4" cy="13.5" r="1.5" stroke="#9CA3AF" strokeWidth="1.3"/><circle cx="12.5" cy="13.5" r="1.5" stroke="#9CA3AF" strokeWidth="1.3"/></svg>,
+                  label:"CARRIER",
+                  lines:["Nordic Express Premium", "Tracking: NEX-99228833"],
+                },
+              ].map((row,i) => (
+                <div key={i} style={{ display:"flex", gap:12, paddingBottom:16, marginBottom:16, borderBottom: i<2 ? "1px solid #F3F4F6" : "none" }}>
+                  <div style={{ width:32, height:32, borderRadius:8, background:"#F9FAFB", border:"1px solid #E5E7EB", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    {row.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize:10, fontWeight:700, letterSpacing:".1em", color:"#9CA3AF", marginBottom:5 }}>{row.label}</div>
+                    {row.lines.map((l,j) => (
+                      <div key={j} style={{ fontSize:13, fontWeight: j===0 ? 700 : 400, color: j===0 ? "#0D1F3C" : "#6B7280", lineHeight:1.5 }}>{l}</div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* NEED HELP CARD */}
+            <div style={{ background:"#FAFAFA", borderRadius:14, border:"1px solid #E5E7EB", padding:"22px", boxShadow:"0 1px 4px rgba(0,0,0,0.04)" }}>
+              <div style={{ fontSize:15, fontWeight:700, color:"#0D1F3C", marginBottom:6 }}>Need help?</div>
+              <p style={{ fontSize:13, color:"#9CA3AF", lineHeight:1.6, marginBottom:18 }}>
+                Our support team is available 24/7 for any queries regarding your delivery.
+              </p>
+              <button style={{ width:"100%", padding:"11px", background:"#F3F4F6", border:"1px solid #E5E7EB", borderRadius:8, fontSize:13, fontWeight:600, color:"#374151", cursor:"pointer", fontFamily:"inherit", marginBottom:10, transition:"background .15s" }}
+                onMouseEnter={e=>e.currentTarget.style.background="#E5E7EB"}
+                onMouseLeave={e=>e.currentTarget.style.background="#F3F4F6"}
+              >
+                Chat with Agent
+              </button>
+              <button style={{ width:"100%", padding:"10px", background:"transparent", border:"none", fontSize:13, fontWeight:600, color:"#F5A623", cursor:"pointer", fontFamily:"inherit" }}
+                onMouseEnter={e=>e.currentTarget.style.color="#DC9018"}
+                onMouseLeave={e=>e.currentTarget.style.color="#F5A623"}
+              >
+                Shipping Policy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
    LOGIN PAGE
@@ -1632,7 +2072,7 @@ function LoginPage({ onNav, onTrackOrder }) {
                 onFocus={e=>e.target.style.borderColor="var(--or)"}
                 onBlur={e=>e.target.style.borderColor="var(--b2)"}/>
             </div>
-            <button className="btn btn-or btn-full btn-lg" onClick={()=>{if(!orderNum){setErr("Enter order number");return;}onTrackOrder(orderNum);onNav("vizfeedback");}}>
+            <button className="btn btn-or btn-full btn-lg" onClick={()=>{if(!orderNum){setErr("Enter order number");return;}onTrackOrder(orderNum);onNav("about");}}>
               View Order →
             </button>
             <div style={{textAlign:"center",marginTop:14,fontSize:13,color:"var(--t2)"}}>
@@ -1668,7 +2108,6 @@ function LoginPage({ onNav, onTrackOrder }) {
         <img src={rectangle4280Img} alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
         <div style={{position:"absolute",inset:0}}/>
       </div>
-      <Footer/>
     </div>
   );
 }
@@ -1988,6 +2427,7 @@ export default function ComfortaApp() {
       case "feedback":     return <CustomerFeedback feedbackItems={feedbackItems}/>;
       case "checkout":     return <Checkout onNav={nav}/>;
       case "success":      return <PaymentSuccess onNav={nav}/>;
+      case "TrackOrder":   return <TrackOrder onNav={nav}/>;
       case "export":       return <ProjectExport onBackTo3D={() => nav("roomviewer3d")} />;
       case "about":        return <AboutUs onNav={nav} />;
       case "settings":     return <Settings/>;
@@ -2004,16 +2444,14 @@ export default function ComfortaApp() {
   // Pages that manage their own full layout (sidebar inside component)
   const selfContained=["login","login-success","createaccount","mydesigns","vizfeedback","success","newproject","step1","step2","step3","about","roomeditor","roomviewer3d"];
 
-  // Customer payment shell with simplified navigation
-  const paymentPages = ["checkout", "success", "about"];
-  if(paymentPages.includes(page)){
-    return(
+
+  // Customer payment and about pages: no sidebar at all
+  const noSidebarPages = ["checkout", "success", "about", "TrackOrder"];
+  if(noSidebarPages.includes(page)){
+    return (
       <>
         <style>{G}</style>
-        <div className="app">
-          <PaymentSidebar active={page} onNav={nav}/>
-          <div className="main">{renderPage()}</div>
-        </div>
+        {renderPage()}
       </>
     );
   }
