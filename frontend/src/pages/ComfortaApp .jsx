@@ -8,6 +8,20 @@ import overlayShadowImg from "../assets/Overlay+Shadow.png";
 import imageShadow1Img from "../assets/Image+Shadow-1.png";
 import imageShadow2Img from "../assets/Image+Shadow-2.png";
 import imageShadowImg from "../assets/Image+Shadow.png";
+import facebookIconImg from "../assets/Facebook.png";
+import instagramIconImg from "../assets/Instagram.png";
+import twitterIconImg from "../assets/Twitter.png";
+import visaCardImg from "../assets/visa.png";
+import card2Img from "../assets/card2 .png";
+import card3Img from "../assets/card3.png";
+import container1Img from "../assets/Container-1.png";
+import containerImg from "../assets/Container.png";
+import image1Img from "../assets/Image-1.png";
+import imageImg from "../assets/Image.png";
+import rectangle4280Img from "../assets/Rectangle 4280 (2).png";
+import image1ParenImg from "../assets/Image (1).png";
+import image2ParenImg from "../assets/Image (2).png";
+import decorativeElementImg from "../assets/Decorative Element.png";
 
 /* ─── CSS ─────────────────────────────────────────────────────────────────── */
 const G = `
@@ -37,7 +51,7 @@ body{font-family:'Inter',sans-serif;background:#1C1C1E;}
 .sb-logo{padding:18px 16px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:6px;}
 .sb-icon{width:42px;height:42px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
 .sb-icon img{width:100%;height:100%;object-fit:contain;}
-.sb-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3;}
+.sb-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3;font-family:'Kailasa',sans-serif;}
 .sb-sub{font-size:9px;font-weight:500;color:rgba(255,255,255,0.3);letter-spacing:.12em;text-transform:uppercase;}
 .sb-nav{flex:1;padding:4px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
 .sn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;}
@@ -56,7 +70,7 @@ body{font-family:'Inter',sans-serif;background:#1C1C1E;}
 .tb-logo{display:flex;align-items:center;gap:8px;cursor:pointer;}
 .tb-li{width:34px;height:34px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .tb-li img{width:100%;height:100%;object-fit:contain;}
-.tb-ln{font-size:16px;font-weight:700;color:var(--tx);}
+.tb-ln{font-size:16px;font-weight:700;color:var(--tx);font-family:'Kailasa',sans-serif;}
 .tb-search{flex:1;max-width:380px;margin-left:auto;position:relative;}
 .tb-search input{width:100%;padding:8px 12px 8px 34px;border:1px solid var(--bd);border-radius:var(--r);font-family:inherit;font-size:13px;background:#F9FAFB;color:var(--tx);outline:none;transition:border-color .15s;}
 .tb-search input:focus{border-color:var(--or);background:var(--wh);}
@@ -231,7 +245,7 @@ body{font-family:'Inter',sans-serif;background:#1C1C1E;}
 /* footer */
 .footer{background:#1C1C1E;padding:48px 40px 24px;margin-top:auto;}
 .footer-g{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px;}
-.footer-bn{font-size:22px;font-weight:800;letter-spacing:.1em;color:#fff;margin-bottom:12px;}
+.footer-bn{font-size:22px;font-weight:800;letter-spacing:.1em;color:#fff;margin-bottom:12px;font-family:'Kailasa',sans-serif;}
 .footer-bd{font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:18px;}
 .footer-nl{font-size:13px;font-weight:600;color:#fff;margin-bottom:10px;}
 .footer-row{display:flex;gap:0;}
@@ -325,7 +339,7 @@ function PaymentSidebar({ active, onNav }) {
   const items = [
     { id:"roomviewer3d", label:"3D View",          icon:"🧊" },
     { id:"vizfeedback",  label:"Send Requirement", icon:"✉" },
-    { id:"about",        label:"About Us",         icon:"ℹ️" },
+    { id:"about",        label:"About Us",         icon:"ℹ" },
   ];
   return (
     <aside className="sb">
@@ -402,12 +416,12 @@ function Footer() {
       </div>
       <div className="footer-bot">
         <div className="footer-soc">
-          {[["🟦","#1877F2"],["📸","#E1306C"],["🐦","#1DA1F2"]].map(([ic,bg],i)=>(
-            <div key={i} className="footer-sb" style={{background:bg}}>{ic}</div>
+          {[[facebookIconImg,"#1877F2"],[instagramIconImg,"#E1306C"],[twitterIconImg,"#1DA1F2"]].map(([icon,bg],i)=>(
+            <div key={i} className="footer-sb" style={{background:bg}}><img src={icon} alt="social-icon" style={{width:"24px",height:"24px"}}/></div>
           ))}
         </div>
         <div className="footer-pay">
-          {["VISA","MC","PayPal"].map(p=><div key={p} className="footer-pb">{p}</div>)}
+          {[[visaCardImg,"VISA"],[card2Img,"MC"],[card3Img,"PayPal"]].map(([img,name],i)=><div key={name} className="footer-pb"><img src={img} alt={name} style={{width:"48px",height:"auto"}}/></div>)}
         </div>
       </div>
       <div className="footer-copy">All prices include VAT. Shipping and delivery charges may apply unless stated otherwise.</div>
@@ -492,18 +506,18 @@ function DesignerDashboard({ onNav }) {
 function MyDesigns({ onNav }) {
   const designs = [
     { name:"Modern Minimalist Living Room", client:"Sarah Johnson",   time:"2 hours ago", status:"IN PROGRESS",
-      img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80" },
+      img:container1Img },
     { name:"Oak Office Suite",              client:"TechCorp HQ",     time:"1 day ago",   status:null,
-      img:"https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80" },
+      img:containerImg },
     { name:"Scandinavian Bedroom",          client:"Mikael Blomkvist", time:"3 days ago",  status:null,
-      img:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80" },
+      img:image1Img },
     { name:"Industrial Kitchen",            client:"Urban Lofts",     time:"1 week ago",  status:null,
-      img:"https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" },
+      img:imageImg },
   ];
   return (
-    <div className="flex fdc" style={{minHeight:"100vh"}}>
+    <div className="flex fdc" style={{minHeight:"100vh",background:"#FBF5E6"}}>
       <TopBar onNav={onNav} />
-      <div className="pc fin" style={{flex:1}}>
+      <div className="pc fin" style={{flex:1,background:"#FBF5E6"}}>
         <div className="ph">
           <div>
             <div className="pt">My Designs</div>
@@ -1651,8 +1665,8 @@ function LoginPage({ onNav, onTrackOrder }) {
       </div>
       {/* hero image */}
       <div style={{marginTop:28,height:280,overflow:"hidden",position:"relative",flexShrink:0}}>
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=80" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
-        <div style={{position:"absolute",inset:0,background:"rgba(20,50,30,0.42)"}}/>
+        <img src={rectangle4280Img} alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+        <div style={{position:"absolute",inset:0}}/>
       </div>
       <Footer/>
     </div>
@@ -1686,8 +1700,8 @@ function LoginSuccess({ onNav }) {
           <button className="btn btn-or btn-full btn-lg" style={{borderRadius:10,marginBottom:14,justifyContent:"center"}} onClick={()=>onNav("newproject")}>Create Project</button>
           <div style={{fontSize:13,color:"var(--t3)",cursor:"pointer"}} onClick={()=>onNav("settings")}>View profile settings</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:26}}>
-            <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=300&q=80" alt="" style={{width:"100%",height:120,objectFit:"cover",borderRadius:8}}/>
-            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&q=80" alt="" style={{width:"100%",height:120,objectFit:"cover",borderRadius:8}}/>
+            <img src={image1ParenImg} alt="" style={{width:"100%",height:120,objectFit:"cover",borderRadius:8}}/>
+            <img src={image2ParenImg} alt="" style={{width:"100%",height:120,objectFit:"cover",borderRadius:8}}/>
           </div>
         </div>
       </div>
@@ -1750,10 +1764,8 @@ function NewProjectStep1({ onNav }) {
             </div>
           </div>
           {/* inspo photos */}
-          <div className="g3" style={{gap:12}}>
-            {["https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=80","https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80","https://images.unsplash.com/photo-1600210492493-0946911123ea?w=400&q=80"].map((src,i)=>(
-              <img key={i} src={src} alt="" style={{width:"100%",height:110,objectFit:"cover",borderRadius:10,display:"block"}} onError={e=>{e.target.style.display="none";}}/>
-            ))}
+          <div style={{marginTop:12}}>
+            <img src={decorativeElementImg} alt="" style={{width:"100%",height:110,objectFit:"cover",borderRadius:10,display:"block"}} onError={e=>{e.target.style.display="none";}}/>
           </div>
         </div>
       </div>
