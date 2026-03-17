@@ -616,8 +616,8 @@ function VizFeedback({ onNav, trackedOrder, onOpen3D, onSubmitRequirements }) {
   const [reqSent,setReqSent]=useState(false);
   const order = trackedOrder || DEFAULT_TRACKED_ORDER;
   return (
-    <div className="flex fdc" style={{minHeight:"100vh"}}>
-      <div className="pc fin" style={{flex:1}}>
+    <div className="flex fdc" style={{minHeight:"100vh",background:"#FBF5E6"}}>
+      <div className="pc fin" style={{flex:1,background:"#FBF5E6"}}>
         <div className="g2" style={{gridTemplateColumns:"1fr 340px",gap:28,alignItems:"start"}}>
           {/* Left */}
           <div>
@@ -1764,8 +1764,10 @@ function NewProjectStep1({ onNav }) {
             </div>
           </div>
           {/* inspo photos */}
-          <div style={{marginTop:12}}>
-            <img src={decorativeElementImg} alt="" style={{width:"100%",height:110,objectFit:"cover",borderRadius:10,display:"block"}} onError={e=>{e.target.style.display="none";}}/>
+          <div className="g3" style={{gap:12}}>
+            {[decorativeElementImg,decorativeElementImg,decorativeElementImg].map((src,i)=>(
+              <img key={i} src={src} alt="" style={{width:"100%",height:110,objectFit:"cover",borderRadius:10,display:"block"}} onError={e=>{e.target.style.display="none";}}/>
+            ))}
           </div>
         </div>
       </div>
