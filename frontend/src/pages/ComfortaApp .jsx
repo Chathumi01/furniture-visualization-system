@@ -3,6 +3,11 @@ import { jsPDF } from "jspdf";
 import RoomEditor from "./RoomEditor";
 import RoomViewer3D from "./RoomViewer3D";
 import logoImg from "../assets/LOGO.png";
+import imageColumnImg from "../assets/Image Column.png";
+import overlayShadowImg from "../assets/Overlay+Shadow.png";
+import imageShadow1Img from "../assets/Image+Shadow-1.png";
+import imageShadow2Img from "../assets/Image+Shadow-2.png";
+import imageShadowImg from "../assets/Image+Shadow.png";
 
 /* ─── CSS ─────────────────────────────────────────────────────────────────── */
 const G = `
@@ -320,6 +325,7 @@ function PaymentSidebar({ active, onNav }) {
   const items = [
     { id:"roomviewer3d", label:"3D View",          icon:"🧊" },
     { id:"vizfeedback",  label:"Send Requirement", icon:"✉" },
+    { id:"about",        label:"About Us",         icon:"ℹ️" },
   ];
   return (
     <aside className="sb">
@@ -1282,6 +1288,285 @@ function Settings() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   ABOUT US PAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ABOUT US PAGE  — Blog + Newsletter + Contact Us
+   ═══════════════════════════════════════════════════════════════════════════ */
+function AboutUs({ onNav }) {
+  const [email, setEmail]     = useState("");
+  const [subDone, setSubDone] = useState(false);
+  const [form, setForm]       = useState({ name:"", email:"", message:"" });
+  const [sent, setSent]       = useState(false);
+
+  const blogs = [
+    {
+      tag:  "INTERIOR DESIGN",
+      tagColor: "#F5A623",
+      title: "Choosing the Right Chair for Your Home",
+      desc:  "Learn how to pick the perfect seating for any room with our comprehensive ergonomic guide.",
+      img:   imageShadow1Img,
+    },
+    {
+      tag:  "LIFE & STYLE",
+      tagColor: "#F5A623",
+      title: "Comfort & Style: Finding the Balance",
+      desc:  "Expert tips on blending ergonomics with aesthetic appeal to create a space you love living in.",
+      img:   imageShadow2Img,
+    },
+    {
+      tag:  "TRENDS",
+      tagColor: "#F5A623",
+      title: "Furniture Trends for Modern Living",
+      desc:  "Discover the latest styles in contemporary furniture and how to integrate them into your home.",
+      img:   imageShadowImg,
+    },
+  ];
+
+  function handleSub() {
+    if (!email) return;
+    setSubDone(true);
+  }
+
+  function handleSend() {
+    if (!form.name || !form.email) return;
+    setSent(true);
+  }
+
+  return (
+    <div style={{ background: "#FFFFFF", fontFamily: "'Inter', sans-serif", color: "#1A1A1A" }}>
+      <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB", padding: "0 40px", height: 60, display: "flex", alignItems: "center", gap: 12 }}>
+        <div
+          style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
+          onClick={() => onNav && onNav("login")}
+        >
+          <div style={{ width: 36, height: 36, background: "#fff", borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+            <img src={logoImg} alt="Comforta logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>Comforta</div>
+            <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: ".15em", textTransform: "uppercase", color: "#9CA3AF" }}>Studio Library</div>
+          </div>
+        </div>
+      </div>
+
+      <section style={{
+        background: "#F5F0E2",
+        minHeight: "88vh",
+        display: "flex",
+        alignItems: "center",
+        padding: "0 6vw",
+        gap: "6vw",
+        overflow: "hidden",
+      }}>
+        <div style={{ flex: "0 0 48%", maxWidth: 680 }}>
+          <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.18)" }}>
+            <img
+              src={overlayShadowImg}
+              alt="Comforta living room"
+              style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block" }}
+              onError={e => {
+                e.target.src = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85";
+              }}
+            />
+          </div>
+        </div>
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <h1 style={{
+            fontSize: "clamp(48px, 6.5vw, 88px)",
+            fontWeight: 800,
+            lineHeight: 1.08,
+            letterSpacing: "-0.02em",
+            marginBottom: 28,
+          }}>
+            <span style={{ color: "#000000", display: "block" }}>Thoughtfully</span>
+            <span style={{ color: "#000000", display: "block" }}>designed.</span>
+            <span style={{ color: "#F5A623", display: "block", marginTop: 8 }}>Crafted for</span>
+            <span style={{ color: "#F5A623", display: "block" }}>comfort.</span>
+          </h1>
+
+          <p style={{
+            fontSize: "clamp(14px, 1.1vw, 17px)",
+            color: "#374151",
+            lineHeight: 1.75,
+            maxWidth: 520,
+          }}>
+            At Comforta, we believe that your home should be a reflection of your
+            unique personality and a sanctuary of comfort. Our journey began
+            with a simple idea: that high-end design should feel as good as it looks.
+          </p>
+        </div>
+      </section>
+
+      <section style={{ padding: "64px 40px 72px", maxWidth: 1100, margin: "0 auto" }}>
+        <h2 style={{ fontSize: 38, fontWeight: 800, color: "#0D0D0D", marginBottom: 6, lineHeight: 1.1 }}>OUR BLOG</h2>
+        <p style={{ fontSize: 14, color: "#6B7280", marginBottom: 40, lineHeight: 1.6 }}>
+          Ideas &amp; inspiration for creating warm, comfortable living spaces.
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 28 }}>
+          {blogs.map((b, i) => (
+            <div key={i} style={{ cursor: "pointer" }}
+              onMouseEnter={e => e.currentTarget.querySelector("img").style.transform = "scale(1.04)"}
+              onMouseLeave={e => e.currentTarget.querySelector("img").style.transform = "scale(1)"}
+            >
+              <div style={{ borderRadius: 10, overflow: "hidden", marginBottom: 18, height: 195 }}>
+                <img
+                  src={b.img} alt={b.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .35s ease" }}
+                  onError={e => { e.target.style.background = "#E5E7EB"; e.target.style.display = "block"; }}
+                />
+              </div>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: b.tagColor, marginBottom: 8 }}>{b.tag}</div>
+              <div style={{ fontSize: 17, fontWeight: 700, color: "#0D0D0D", marginBottom: 10, lineHeight: 1.35 }}>{b.title}</div>
+              <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.65, marginBottom: 14 }}>{b.desc}</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, fontWeight: 600, color: "#F5A623", cursor: "pointer" }}>
+                Read More
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7h10M8 3l4 4-4 4" stroke="#F5A623" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ background: "#FEF3E2", padding: "56px 40px" }}>
+        <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+          <h3 style={{ fontSize: 26, fontWeight: 800, color: "#0D0D0D", marginBottom: 12, lineHeight: 1.25 }}>
+            Join our design community
+          </h3>
+          <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7, marginBottom: 28 }}>
+            Get the latest design tips, exclusive offers, and behind-the-scenes stories delivered to your inbox every week.
+          </p>
+
+          {subDone ? (
+            <div style={{ padding: "14px 28px", background: "#DCFCE7", borderRadius: 10, fontSize: 14, fontWeight: 600, color: "#16A34A" }}>
+              ✓ You are subscribed! Welcome to the community.
+            </div>
+          ) : (
+            <>
+              <div style={{ display: "flex", gap: 8, maxWidth: 420, margin: "0 auto 14px" }}>
+                <input
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  style={{ flex: 1, padding: "12px 16px", border: "1.5px solid #E5E7EB", borderRadius: 8, fontSize: 14, fontFamily: "inherit", outline: "none", background: "#fff", color: "#1A1A1A" }}
+                  onFocus={e => e.target.style.borderColor = "#F5A623"}
+                  onBlur={e => e.target.style.borderColor = "#E5E7EB"}
+                  onKeyDown={e => e.key === "Enter" && handleSub()}
+                />
+                <button
+                  onClick={handleSub}
+                  style={{ padding: "12px 22px", background: "#F5A623", color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", transition: "background .15s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#DC9018"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#F5A623"}
+                >
+                  Subscribe
+                </button>
+              </div>
+              <p style={{ fontSize: 12, color: "#9CA3AF" }}>We respect your privacy. Unsubscribe at any time.</p>
+            </>
+          )}
+        </div>
+      </section>
+
+      <section style={{ background: "#FAF7F0", padding: "72px 40px 60px" }}>
+        <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <h2 style={{ fontSize: 40, fontWeight: 800, color: "#0D0D0D", letterSpacing: ".04em", marginBottom: 12 }}>CONTACT US</h2>
+          <div style={{ width: 48, height: 3, background: "#F5A623", borderRadius: 2, margin: "0 auto 18px" }} />
+          <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7, maxWidth: 480, margin: "0 auto" }}>
+            Experience the harmony of Scandinavian design. Reach out to us for bespoke furniture solutions or any inquiries.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, maxWidth: 1100, margin: "0 auto", alignItems: "start" }}>
+          <div>
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ fontSize: 13, fontWeight: 500, color: "#374151", display: "block", marginBottom: 7 }}>Name</label>
+              <input
+                value={form.name}
+                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                placeholder="Enter your full name"
+                style={{ width: "100%", padding: "11px 14px", border: "1.5px solid #E5E7EB", borderRadius: 7, fontSize: 14, fontFamily: "inherit", outline: "none", background: "#fff", color: "#1A1A1A", boxSizing: "border-box" }}
+                onFocus={e => e.target.style.borderColor = "#F5A623"}
+                onBlur={e => e.target.style.borderColor = "#E5E7EB"}
+              />
+            </div>
+
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ fontSize: 13, fontWeight: 500, color: "#374151", display: "block", marginBottom: 7 }}>Email Address</label>
+              <input
+                type="email"
+                value={form.email}
+                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                placeholder="name@example.com"
+                style={{ width: "100%", padding: "11px 14px", border: "1.5px solid #E5E7EB", borderRadius: 7, fontSize: 14, fontFamily: "inherit", outline: "none", background: "#fff", color: "#1A1A1A", boxSizing: "border-box" }}
+                onFocus={e => e.target.style.borderColor = "#F5A623"}
+                onBlur={e => e.target.style.borderColor = "#E5E7EB"}
+              />
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ fontSize: 13, fontWeight: 500, color: "#374151", display: "block", marginBottom: 7 }}>Message</label>
+              <textarea
+                value={form.message}
+                onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                placeholder="Questions, ideas, or support needed? Our team is here for you."
+                rows={5}
+                style={{ width: "100%", padding: "11px 14px", border: "1.5px solid #E5E7EB", borderRadius: 7, fontSize: 14, fontFamily: "inherit", outline: "none", background: "#fff", color: "#1A1A1A", resize: "vertical", lineHeight: 1.6, boxSizing: "border-box" }}
+                onFocus={e => e.target.style.borderColor = "#F5A623"}
+                onBlur={e => e.target.style.borderColor = "#E5E7EB"}
+              />
+            </div>
+
+            {sent ? (
+              <div style={{ padding: "13px", background: "#DCFCE7", borderRadius: 7, fontSize: 14, fontWeight: 600, color: "#16A34A", textAlign: "center" }}>
+                ✓ Message sent! We will get back to you soon.
+              </div>
+            ) : (
+              <button
+                onClick={handleSend}
+                style={{ width: "100%", padding: "13px", background: "#F5A623", color: "#fff", border: "none", borderRadius: 7, fontSize: 13, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", cursor: "pointer", fontFamily: "inherit", transition: "background .15s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#DC9018"}
+                onMouseLeave={e => e.currentTarget.style.background = "#F5A623"}
+              >
+                Send Message
+              </button>
+            )}
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginTop: 36, paddingTop: 28, borderTop: "1px solid #E5E7EB" }}>
+              {[
+                ["EMAIL US",   "hello@comforta.com"],
+                ["CALL US",    "011-1001090"],
+                ["VISIT US",   "5A, Colombo,\nSri Lanka"],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", color: "#9CA3AF", marginBottom: 6 }}>{label}</div>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: "#1A1A1A", lineHeight: 1.5, whiteSpace: "pre-line" }}>{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ borderRadius: 14, overflow: "hidden", height: 480 }}>
+            <img
+              src={imageColumnImg}
+              alt="Comforta showroom"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              onError={e => { e.target.style.background = "#E5E7EB"; }}
+            />
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    LOGIN PAGE
    ═══════════════════════════════════════════════════════════════════════════ */
 function LoginPage({ onNav, onTrackOrder }) {
@@ -1690,6 +1975,7 @@ export default function ComfortaApp() {
       case "checkout":     return <Checkout onNav={nav}/>;
       case "success":      return <PaymentSuccess onNav={nav}/>;
       case "export":       return <ProjectExport onBackTo3D={() => nav("roomviewer3d")} />;
+      case "about":        return <AboutUs onNav={nav} />;
       case "settings":     return <Settings/>;
       case "roomeditor":   return <RoomEditor onSwitch3D={(items, room) => {
         setViewerPayload({ items, room });
@@ -1702,10 +1988,10 @@ export default function ComfortaApp() {
   }
 
   // Pages that manage their own full layout (sidebar inside component)
-  const selfContained=["login","login-success","createaccount","mydesigns","vizfeedback","success","newproject","step1","step2","step3","roomeditor","roomviewer3d"];
+  const selfContained=["login","login-success","createaccount","mydesigns","vizfeedback","success","newproject","step1","step2","step3","about","roomeditor","roomviewer3d"];
 
   // Customer payment shell with simplified navigation
-  const paymentPages = ["checkout", "success"];
+  const paymentPages = ["checkout", "success", "about"];
   if(paymentPages.includes(page)){
     return(
       <>
