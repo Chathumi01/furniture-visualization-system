@@ -781,7 +781,7 @@ function CreateAccount({ onNav }) {
     if(!f.pass||f.pass.length<6) e.pass="Minimum 6 characters";
     if(f.pass!==f.confirm) e.confirm="Passwords don't match";
     if(Object.keys(e).length){setErrs(e);return;}
-    onNav("dashboard");
+    onNav("login-success");
   }
   return (
     <div className="flex fdc" style={{minHeight:"100vh"}}>
@@ -815,7 +815,7 @@ function CreateAccount({ onNav }) {
             </div>
             <button className="btn btn-or btn-lg btn-full mt2" onClick={submit}>Create Account</button>
             <div style={{fontSize:13,color:"var(--t2)",textAlign:"center"}}>
-              Already have an account? <span style={{color:"var(--or)",fontWeight:600,cursor:"pointer"}} onClick={()=>onNav("dashboard")}>Sign In</span>
+              Already have an account? <span style={{color:"var(--or)",fontWeight:600,cursor:"pointer"}} onClick={()=>onNav("login")}>Sign In</span>
             </div>
           </div>
         </div>
