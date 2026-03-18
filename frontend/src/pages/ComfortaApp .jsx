@@ -1165,7 +1165,7 @@ function PaymentSuccess({ onNav }) {
         </div>
         <div className="flex ic gap3">
           <button className="btn btn-or btn-lg" onClick={()=>onNav("TrackOrder")}>📦 Track Order</button>
-          <button className="btn btn-out btn-lg" onClick={()=>onNav("dashboard")}>🏠 Return to Dashboard</button>
+          <button className="btn btn-out btn-lg" onClick={()=>onNav("login")}>🏠 Return to Dashboard</button>
         </div>
         <div style={{fontSize:12,color:"var(--t3)",marginTop:10}}>A confirmation email has been sent to your registered email address.</div>
         <div style={{fontSize:13,color:"var(--t2)",marginTop:14}}>
