@@ -510,10 +510,22 @@ export default function RoomViewer3D({ items = [], room = { w:5, d:4, shape:"rec
 
         {/* ── HEADER ── */}
         <header className="rv-header">
-          <div className="rv-logo"><img src={logoImg} alt="Comforta logo" className="rv-logo-img" /> Comforta &nbsp;
-            <small style={{fontFamily:"DM Sans",fontSize:"11px",color:"rgba(255,255,255,0.35)",fontWeight:400}}>3D Visualiser</small>
-          </div>
-          <div className="rv-actions">
+           <div style={{ background: "#FBF5E8", fontFamily: "'Inter', sans-serif", color: "#ffffff" }}>
+                          <div style={{ background: "#1A1916", borderBottom: "1px solid #E5E7EB", padding: "0 40px", height: 55, display: "flex", alignItems: "center", gap: 12 }}>
+                            <div
+                              style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
+           >
+                              <div style={{ width: 36, height: 36, background: "#fff", borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                                <img src={logoImg} alt="Comforta logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                              </div>
+                              <div>
+                                <div style={{ fontSize: 13, fontWeight: 700, color: "#ffffff", lineHeight: 1 }}>Comforta</div>
+                                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: ".15em", textTransform: "uppercase", color: "#b3b8c1" }}>Studio Library</div>
+                              </div>
+                            </div>
+                            </div>
+                            </div>
+          <div className="rv-actions" >
             <span style={{fontSize:"11px",color:"rgba(255,255,255,0.35)"}}>
               {items.length} item{items.length!==1?"s":""} · {room.w}m × {room.d}m
             </span>

@@ -3,6 +3,7 @@ import { jsPDF } from "jspdf";
 import RoomEditor from "./RoomEditor";
 import RoomViewer3D from "./RoomViewer3D";
 import logoImg from "../assets/LOGO.png";
+import AboutUs from "./Aboutus";
 
 /* ─── CSS ─────────────────────────────────────────────────────────────────── */
 const G = `
@@ -316,36 +317,6 @@ function Sidebar({ active, onNav }) {
   );
 }
 
-function PaymentSidebar({ active, onNav }) {
-  const items = [
-    { id:"roomviewer3d", label:"3D View",          icon:"🧊" },
-    { id:"vizfeedback",  label:"Send Requirement", icon:"✉" },
-  ];
-  return (
-    <aside className="sb">
-      <div className="sb-logo">
-        <div className="sb-icon"><img src={logoImg} alt="Comforta logo" /></div>
-        <div>
-          <div className="sb-name">Comforta</div>
-          <div className="sb-sub">Customer Actions</div>
-        </div>
-      </div>
-      <nav className="sb-nav">
-        {items.map(it => (
-          <button key={it.id} className={`sn${active===it.id?" on":""}`} onClick={()=>onNav(it.id)}>
-            <span style={{fontSize:14,opacity:.9}}>{it.icon}</span>{it.label}
-          </button>
-        ))}
-      </nav>
-      <div className="sb-bot">
-        <button className="sb-bi" onClick={()=>onNav("checkout")}>
-          <span style={{fontSize:13}}>💳</span>&nbsp;Payment
-        </button>
-      </div>
-    </aside>
-  );
-}
-
 /* ─── TOPBAR ──────────────────────────────────────────────────────────────── */
 function TopBar({ onNav }) {
   return (
@@ -368,47 +339,313 @@ function TopBar({ onNav }) {
 
 /* ─── FOOTER ──────────────────────────────────────────────────────────────── */
 function Footer() {
+  const [newsEmail, setNewsEmail] = useState("");
+  const [agreed, setAgreed]       = useState(false);
+
   return (
-    <footer className="footer">
-      <div className="footer-g">
+    <footer style={{
+      background:"#000000",
+      fontFamily:"'Inter',sans-serif",
+      paddingTop:72,
+    }}>
+
+      {/* ══ MAIN CONTENT ROW ══════════════════════════════════════════════════ */}
+      <div style={{
+        maxWidth:1280,
+        margin:"0 auto",
+        padding:"0 64px 64px",
+        display:"grid",
+        gridTemplateColumns:"1fr 1fr",
+        gap:80,
+        alignItems:"start",
+      }}>
+
+        {/* ── LEFT HALF: Brand + newsletter ── */}
         <div>
-          <div className="footer-bn">COMFORTA</div>
-          <div className="footer-bd">Furniture created to enhance everyday living with comfort, warmth, and refined design.</div>
-          <div className="footer-nl">Join our newsletter and receive exclusive offers</div>
-          <div className="footer-row">
-            <input className="footer-inp" placeholder="Enter Your Email" />
-            <button className="footer-btn">→</button>
+          {/* COMFORTA wordmark — ultra-wide letter spacing, light weight */}
+          <div style={{
+            fontSize:32,
+            fontWeight:200,
+            letterSpacing:".35em",
+            color:"#FFFFFF",
+            marginBottom:28,
+            lineHeight:1,
+          }}>
+            COMFORTA
           </div>
-          <label className="footer-ck">
-            <div className="chk on" />
-            Yes, I accept the <u>Privacy Policy</u>
+
+          {/* Tagline — letter-spaced, muted */}
+          <p style={{
+            fontSize:13,
+            color:"rgba(255,255,255,0.45)",
+            lineHeight:1.85,
+            marginBottom:28,
+            letterSpacing:".06em",
+            maxWidth:320,
+          }}>
+            Furniture created to enhance<br/>
+            everyday living with comfort, warmth,<br/>
+            and refined design.
+          </p>
+
+          {/* Newsletter label — bold white */}
+          <div style={{
+            fontSize:13,
+            fontWeight:700,
+            color:"#FFFFFF",
+            marginBottom:14,
+            letterSpacing:".01em",
+          }}>
+            Join our newsletter and receive exclusive offers
+          </div>
+
+          {/* Email input — dark glass pill */}
+          <input
+            value={newsEmail}
+            onChange={e => setNewsEmail(e.target.value)}
+            placeholder="Enter Your Email"
+            style={{
+              display:"block",
+              width:260,
+              padding:"10px 16px",
+              background:"rgba(255,255,255,0.07)",
+              border:"1px solid rgba(255,255,255,0.12)",
+              borderRadius:20,
+              color:"rgba(255,255,255,0.5)",
+              fontSize:12,
+              fontFamily:"inherit",
+              outline:"none",
+              marginBottom:12,
+              letterSpacing:".02em",
+            }}
+          />
+
+          {/* Privacy checkbox */}
+          <label style={{
+            display:"flex",
+            alignItems:"center",
+            gap:8,
+            cursor:"pointer",
+            fontSize:11,
+            color:"rgba(255,255,255,0.3)",
+            letterSpacing:".02em",
+          }}>
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={e => setAgreed(e.target.checked)}
+              style={{width:12,height:12,accentColor:"#F5A623",cursor:"pointer",flexShrink:0}}
+            />
+            Yes, I accept the{" "}
+            <span style={{
+              textDecoration:"underline",
+              cursor:"pointer",
+              color:"rgba(255,255,255,0.4)",
+            }}>Privacy Policy</span>
           </label>
         </div>
-        {[["Company",["About us","Our Story","Wholesale Inquiries"]],
-          ["Store",["Best Sellers","Latest Products","Sale"]],
-          ["Account",["My Account","My Orders"]]
-        ].map(([t,ls])=>(
-          <div key={t}>
-            <div className="footer-ct">{t}</div>
-            {ls.map(l=><span key={l} className="footer-cl">{l}</span>)}
+
+        {/* ── RIGHT HALF: 3-column link grid ── */}
+        <div style={{
+          display:"grid",
+          gridTemplateColumns:"1fr 1fr 1fr",
+          gap:40,
+        }}>
+          {/* Company */}
+          <div>
+            <div style={{
+              fontSize:14,
+              fontWeight:600,
+              color:"#FFFFFF",
+              marginBottom:24,
+              letterSpacing:".02em",
+            }}>Company</div>
+            {["About us","Our Story","Wholesale Inquiries"].map(l => (
+              <div key={l}
+                style={{
+                  fontSize:13,
+                  color:"rgba(255,255,255,0.45)",
+                  marginBottom:18,
+                  cursor:"pointer",
+                  letterSpacing:".01em",
+                  lineHeight:1.4,
+                  transition:"color .15s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.color="#FFFFFF"}
+                onMouseLeave={e => e.currentTarget.style.color="rgba(255,255,255,0.45)"}
+              >{l}</div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="footer-bot">
-        <div className="footer-soc">
-          {[["🟦","#1877F2"],["📸","#E1306C"],["🐦","#1DA1F2"]].map(([ic,bg],i)=>(
-            <div key={i} className="footer-sb" style={{background:bg}}>{ic}</div>
-          ))}
+
+          {/* Store */}
+          <div>
+            <div style={{
+              fontSize:14,
+              fontWeight:600,
+              color:"#FFFFFF",
+              marginBottom:24,
+              letterSpacing:".02em",
+            }}>Store</div>
+            {["Best Sellers","Latest Products","Sale"].map(l => (
+              <div key={l}
+                style={{
+                  fontSize:13,
+                  color:"rgba(255,255,255,0.45)",
+                  marginBottom:18,
+                  cursor:"pointer",
+                  letterSpacing:".01em",
+                  lineHeight:1.4,
+                  transition:"color .15s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.color="#FFFFFF"}
+                onMouseLeave={e => e.currentTarget.style.color="rgba(255,255,255,0.45)"}
+              >{l}</div>
+            ))}
+          </div>
+
+          {/* Account */}
+          <div>
+            <div style={{
+              fontSize:14,
+              fontWeight:600,
+              color:"#FFFFFF",
+              marginBottom:24,
+              letterSpacing:".02em",
+            }}>Account</div>
+            {["My Account","My Orders"].map(l => (
+              <div key={l}
+                style={{
+                  fontSize:13,
+                  color:"rgba(255,255,255,0.45)",
+                  marginBottom:18,
+                  cursor:"pointer",
+                  letterSpacing:".01em",
+                  lineHeight:1.4,
+                  transition:"color .15s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.color="#FFFFFF"}
+                onMouseLeave={e => e.currentTarget.style.color="rgba(255,255,255,0.45)"}
+              >{l}</div>
+            ))}
+          </div>
         </div>
-        <div className="footer-pay">
-          {["VISA","MC","PayPal"].map(p=><div key={p} className="footer-pb">{p}</div>)}
+      </div>
+
+      {/* ══ SOCIAL + PAYMENT ROW ════════════════════════════════════════════ */}
+      <div style={{
+        maxWidth:1280,
+        margin:"0 auto",
+        padding:"28px 64px",
+        borderTop:"1px solid rgba(255,255,255,0.08)",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"space-between",
+        gap:24,
+        flexWrap:"wrap",
+      }}>
+        {/* Social icons — left aligned, under the right half */}
+        <div style={{
+          marginLeft:"calc(50% + 80px/2)",
+          display:"flex",
+          gap:14,
+          alignItems:"center",
+        }}>
+          {/* Facebook */}
+          <div style={{
+            width:46,height:46,borderRadius:"50%",background:"#1877F2",
+            display:"flex",alignItems:"center",justifyContent:"center",
+            cursor:"pointer",flexShrink:0,
+          }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M11.5 10.5h2.5l.5-3H11.5V6c0-.8.4-1.5 1.5-1.5H15V2s-1-.3-2.5-.3c-2.8 0-4.5 1.7-4.5 4.8V7.5H5.5v3H8.5V19h3V10.5z" fill="#fff"/>
+            </svg>
+          </div>
+          {/* Instagram */}
+          <div style={{
+            width:46,height:46,borderRadius:"50%",
+            background:"radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)",
+            display:"flex",alignItems:"center",justifyContent:"center",
+            cursor:"pointer",flexShrink:0,
+          }}>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="3" width="16" height="16" rx="5" stroke="#fff" strokeWidth="1.8"/>
+              <circle cx="11" cy="11" r="4" stroke="#fff" strokeWidth="1.8"/>
+              <circle cx="16.5" cy="5.5" r="1.2" fill="#fff"/>
+            </svg>
+          </div>
+          {/* Twitter */}
+          <div style={{
+            width:46,height:46,borderRadius:"50%",background:"#1DA1F2",
+            display:"flex",alignItems:"center",justifyContent:"center",
+            cursor:"pointer",flexShrink:0,
+          }}>
+            <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
+              <path d="M22 2.13a9.1 9.1 0 01-2.6.71 4.56 4.56 0 002-2.52 9.13 9.13 0 01-2.89 1.1A4.54 4.54 0 0011.1 5.6c0 .36.04.7.11 1.03A12.88 12.88 0 011.64.95a4.54 4.54 0 001.4 6.07 4.5 4.5 0 01-2.06-.57v.06a4.55 4.55 0 003.65 4.46 4.57 4.57 0 01-2.05.08 4.55 4.55 0 004.25 3.16A9.13 9.13 0 010 15.94 12.86 12.86 0 006.97 18c8.38 0 12.96-6.94 12.96-12.96l-.01-.59A9.22 9.22 0 0022 2.13z" fill="#fff"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Payment badges — right side */}
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          {/* VISA */}
+          <div style={{
+            background:"#fff",borderRadius:6,
+            padding:"7px 14px",height:42,
+            display:"flex",alignItems:"center",justifyContent:"center",
+            minWidth:70, border:"1px solid #E5E7EB",
+          }}>
+            <svg width="48" height="15" viewBox="0 0 48 15">
+              <text x="0" y="13" fontFamily="Arial Black,Arial" fontSize="14" fontWeight="900" fill="#1A1F71">VISA</text>
+            </svg>
+          </div>
+          {/* MasterCard */}
+          <div style={{
+            background:"#fff",borderRadius:6,
+            padding:"7px 12px",height:42,
+            display:"flex",alignItems:"center",justifyContent:"center",
+            border:"1px solid #E5E7EB",
+          }}>
+            <svg width="44" height="28" viewBox="0 0 44 28">
+              <circle cx="16" cy="14" r="13" fill="#EB001B"/>
+              <circle cx="28" cy="14" r="13" fill="#F79E1B"/>
+              <path d="M22 4.8A13 13 0 0122 23.2 13 13 0 0122 4.8z" fill="#FF5F00"/>
+            </svg>
+          </div>
+          {/* PayPal */}
+          <div style={{
+            background:"#fff",borderRadius:6,
+            padding:"7px 14px",height:42,
+            display:"flex",alignItems:"center",justifyContent:"center",
+            minWidth:70, border:"1px solid #E5E7EB",
+          }}>
+            <svg width="54" height="14" viewBox="0 0 54 14">
+              <text x="0" y="11" fontFamily="Arial" fontSize="12" fontWeight="700" fill="#003087">Pay</text>
+              <text x="22" y="11" fontFamily="Arial" fontSize="12" fontWeight="700" fill="#009cde">Pal</text>
+            </svg>
+          </div>
         </div>
       </div>
-      <div className="footer-copy">All prices include VAT. Shipping and delivery charges may apply unless stated otherwise.</div>
+
+      {/* ══ BOTTOM VAT BAR ══════════════════════════════════════════════════ */}
+      <div style={{
+        maxWidth:1280,
+        margin:"0 auto",
+        padding:"16px 64px 20px",
+        borderTop:"1px solid rgba(255,255,255,0.06)",
+        textAlign:"right",
+      }}>
+        <span style={{
+          fontSize:11,
+          color:"rgba(255,255,255,0.22)",
+          letterSpacing:".03em",
+        }}>
+          All prices include VAT. Shipping and delivery charges may apply unless stated otherwise.
+        </span>
+      </div>
+
     </footer>
   );
 }
-
 /* ═══════════════════════════════════════════════════════════════════════════
    PAGE 1 — DESIGNER DASHBOARD
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -495,7 +732,7 @@ function MyDesigns({ onNav }) {
       img:"https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" },
   ];
   return (
-    <div className="flex fdc" style={{minHeight:"100vh"}}>
+    <div className="flex fdc" style={{minHeight:"100vh", background:"#FBF5E8"}}>
       <TopBar onNav={onNav} />
       <div className="pc fin" style={{flex:1}}>
         <div className="ph">
@@ -583,7 +820,6 @@ function CreateAccount({ onNav }) {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
@@ -596,7 +832,7 @@ function VizFeedback({ onNav, trackedOrder, onOpen3D, onSubmitRequirements }) {
   const [reqSent,setReqSent]=useState(false);
   const order = trackedOrder || DEFAULT_TRACKED_ORDER;
   return (
-    <div className="flex fdc" style={{minHeight:"100vh"}}>
+    <div className="flex fdc" style={{minHeight:"100vh",background :"#FBF5E8"}}>
       <div className="pc fin" style={{flex:1}}>
         <div className="g2" style={{gridTemplateColumns:"1fr 340px",gap:28,alignItems:"start"}}>
           {/* Left */}
@@ -772,7 +1008,7 @@ function Checkout({ onNav }) {
   ];
 
   return (
-    <div className="pc fin">
+    <div className="pc fin"style={{background:"#FBF5E8"}}>
       <div className="ph">
         <div>
           <div className="pt">Complete your order</div>
@@ -928,7 +1164,7 @@ function PaymentSuccess({ onNav }) {
           </div>
         </div>
         <div className="flex ic gap3">
-          <button className="btn btn-or btn-lg" onClick={()=>onNav("mydesigns")}>📦 Track Order</button>
+          <button className="btn btn-or btn-lg" onClick={()=>onNav("TrackOrder")}>📦 Track Order</button>
           <button className="btn btn-out btn-lg" onClick={()=>onNav("dashboard")}>🏠 Return to Dashboard</button>
         </div>
         <div style={{fontSize:12,color:"var(--t3)",marginTop:10}}>A confirmation email has been sent to your registered email address.</div>
@@ -1282,6 +1518,274 @@ function Settings() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   TRACK ORDER PAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+function TrackOrder({ onNav }) {
+  const steps = [
+    { label:"Order Placed",     sub:"Oct 24, 09:30 AM", done:true,  active:false },
+    { label:"Processing",       sub:"Oct 24, 02:15 PM", done:true,  active:false },
+    { label:"In Transit",       sub:"Oct 25, 08:00 AM", done:false, active:true  },
+    { label:"Out for Delivery", sub:"Estimated Today",  done:false, active:false },
+    { label:"Delivered",        sub:"Expected Oct 26",  done:false, active:false },
+  ];
+
+  const items = [
+    { name:"Nordic Oak Lounge Chair", variant:"Natural / Wool Gray", qty:1, price:"$850.00", sku:"CH-88012",
+      img:"https://images.unsplash.com/photo-1592078615290-033ee584e267?w=200&q=80" },
+    { name:"Minimalist Side Table",   variant:"Walnut / Black Metal",  qty:2, price:"$440.00", sku:"TB-11094",
+      img:"https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=200&q=80" },
+  ];
+
+  /* SVG step icons */
+  function StepIcon({ type, done, active }) {
+    const bg  = done||active ? "#F5A623" : "#E5E7EB";
+    const col = done||active ? "#fff"    : "#9CA3AF";
+    const icons = {
+      check:  <path d="M5 10l3.5 3.5L16 7" stroke={col} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>,
+      doc:    <><rect x="6" y="4" width="10" height="14" rx="2" stroke={col} strokeWidth="1.8"/><path d="M9 9h4M9 12h4" stroke={col} strokeWidth="1.5" strokeLinecap="round"/></>,
+      truck:  <><rect x="2" y="8" width="13" height="9" rx="1.5" stroke={col} strokeWidth="1.7"/><path d="M15 11h3l2 3v3h-5V11z" stroke={col} strokeWidth="1.7" strokeLinejoin="round"/><circle cx="6"  cy="19" r="1.8" stroke={col} strokeWidth="1.5"/><circle cx="18" cy="19" r="1.8" stroke={col} strokeWidth="1.5"/></>,
+      pin:    <><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke={col} strokeWidth="1.7"/><circle cx="12" cy="9" r="2.5" stroke={col} strokeWidth="1.5"/></>,
+      circle: <><circle cx="12" cy="12" r="8" stroke={col} strokeWidth="1.7"/><path d="M9 12l2 2 4-4" stroke={col} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></>,
+    };
+    const iconTypes = ["check","doc","truck","pin","circle"];
+    return (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        {icons[type]}
+      </svg>
+    );
+  }
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#FAF7F0", fontFamily:"'Inter',sans-serif" }}>
+
+      {/* ── HEADER ── */}
+      <div style={{ background:"#FAF7F0", borderBottom:"1px solid #E5E7EB", padding:"16px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+          <button onClick={()=>onNav("mydesigns")} style={{ width:36, height:36, borderRadius:"50%", border:"1.5px solid #E5E7EB", background:"#fff", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <div>
+            <div style={{ fontSize:22, fontWeight:800, color:"#0D1F3C", lineHeight:1 }}>Order #ORD-8821</div>
+            <div style={{ fontSize:12, color:"#9CA3AF", marginTop:4 }}>Placed on October 24, 2023 at 09:30 AM</div>
+          </div>
+        </div>
+        <div style={{ display:"flex", gap:10 }}>
+          <button style={{ display:"flex", alignItems:"center", gap:7, padding:"9px 18px", border:"1.5px solid #E5E7EB", borderRadius:8, background:"#fff", fontSize:13, fontWeight:600, color:"#374151", cursor:"pointer", fontFamily:"inherit" }}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 2h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.5"/><path d="M5 6h6M5 9h6M5 12h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+            Print Invoice
+          </button>
+          <button style={{ padding:"9px 22px", background:"#F5A623", border:"none", borderRadius:8, fontSize:13, fontWeight:700, color:"#fff", cursor:"pointer", fontFamily:"inherit" }}>
+            Support
+          </button>
+        </div>
+      </div>
+
+      <div style={{ padding:"24px 28px", maxWidth:1100, margin:"0 auto" }}>
+
+        {/* ── PROGRESS STEPPER ── */}
+        <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", padding:"28px 32px", marginBottom:20, boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", position:"relative" }}>
+            {/* connector line behind icons */}
+            <div style={{ position:"absolute", top:22, left:"10%", right:"10%", height:3, background:"#E5E7EB", zIndex:0 }}/>
+            <div style={{ position:"absolute", top:22, left:"10%", width:"42%", height:3, background:"#F5A623", zIndex:1 }}/>
+
+            {steps.map((s, i) => {
+              const iconTypes = ["check","doc","truck","pin","circle"];
+              const bg  = s.done ? "#F5A623" : s.active ? "#F5A623" : "#fff";
+              const border = s.done||s.active ? "none" : "2px solid #E5E7EB";
+              return (
+                <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10, position:"relative", zIndex:2 }}>
+                  <div style={{ width:44, height:44, borderRadius:"50%", background:bg, border, display:"flex", alignItems:"center", justifyContent:"center", boxShadow: s.done||s.active ? "0 2px 8px rgba(245,166,35,0.4)" : "none" }}>
+                    <StepIcon type={iconTypes[i]} done={s.done} active={s.active}/>
+                  </div>
+                  <div style={{ textAlign:"center" }}>
+                    <div style={{ fontSize:13, fontWeight:700, color: s.done||s.active ? "#0D1F3C" : "#9CA3AF" }}>{s.label}</div>
+                    <div style={{ fontSize:11, color:"#9CA3AF", marginTop:2 }}>{s.sub}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── MAIN 2-COL ── */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 340px", gap:20 }}>
+
+          {/* LEFT COLUMN */}
+          <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
+
+            {/* MAP CARD */}
+            <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+              <div style={{ padding:"16px 20px 12px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <span style={{ fontSize:18 }}>🗺</span>
+                  <span style={{ fontSize:15, fontWeight:700, color:"#0D1F3C" }}>Current Location</span>
+                </div>
+                <span style={{ fontSize:11, fontWeight:700, letterSpacing:".08em", color:"#F5A623", border:"1px solid #F5A623", borderRadius:20, padding:"3px 10px" }}>LIVE TRACKING</span>
+              </div>
+
+              {/* Map placeholder with Copenhagen city art */}
+              <div style={{ position:"relative", height:320, background:"#E8E4DC", overflow:"hidden" }}>
+                {/* Road network SVG mock map */}
+                <svg width="100%" height="100%" viewBox="0 0 600 320" preserveAspectRatio="xMidYMid slice" style={{ position:"absolute", inset:0 }}>
+                  {/* Map background */}
+                  <rect width="600" height="320" fill="#E8E3D8"/>
+                  {/* Water */}
+                  <ellipse cx="480" cy="200" rx="160" ry="120" fill="#BFD8E8" opacity="0.6"/>
+                  {/* Parks */}
+                  <ellipse cx="280" cy="100" rx="40" ry="25" fill="#C8D8A8" opacity="0.8"/>
+                  <ellipse cx="160" cy="180" rx="30" ry="20" fill="#C8D8A8" opacity="0.7"/>
+                  {/* Major roads */}
+                  {[
+                    "M0 100 Q150 95 300 110 Q450 125 600 120",
+                    "M0 180 Q200 170 300 175 Q450 180 600 175",
+                    "M0 250 Q150 245 300 250 Q450 255 600 248",
+                    "M150 0 Q155 100 160 200 Q162 260 165 320",
+                    "M280 0 Q285 80 290 160 Q292 240 295 320",
+                    "M420 0 Q425 100 430 200 Q432 260 435 320",
+                    "M60 0 Q62 80 65 160 Q66 240 68 320",
+                    "M520 0 Q522 80 525 160",
+                  ].map((d,i)=>(
+                    <path key={i} d={d} stroke="#fff" strokeWidth={i<4?6:4} fill="none" opacity="0.9"/>
+                  ))}
+                  {/* Minor roads */}
+                  {[
+                    "M0 60 Q300 55 600 62","M0 220 Q300 215 600 222",
+                    "M100 0 Q102 160 104 320","M360 0 Q362 160 364 320",
+                    "M480 0 Q482 120 484 240",
+                  ].map((d,i)=>(
+                    <path key={i} d={d} stroke="#fff" strokeWidth="2.5" fill="none" opacity="0.6"/>
+                  ))}
+                  {/* City labels */}
+                  {[
+                    [80,  95,  "NØRREBRO"],
+                    [230, 145, "INDRE BY"],
+                    [295, 185, "Copenhagen"],
+                    [95,  210, "Frederiksberg"],
+                    [350, 245, "Amagerbro"],
+                    [130, 278, "VALBY"],
+                  ].map(([x,y,t],i)=>(
+                    <text key={i} x={x} y={y} fontSize={i===2?15:10} fontWeight={i===2?600:400} fill="#5A5040" fontFamily="Inter,sans-serif" opacity={i===2?1:0.8}>{t}</text>
+                  ))}
+                  {/* Orange glow pulse around truck */}
+                  <circle cx="240" cy="185" r="55" fill="#F5A623" opacity="0.12"/>
+                  <circle cx="240" cy="185" r="38" fill="#F5A623" opacity="0.18"/>
+                </svg>
+
+                {/* Truck pin */}
+                <div style={{ position:"absolute", top:"50%", left:"40%", transform:"translate(-50%,-50%)", zIndex:3 }}>
+                  <div style={{ width:44, height:44, borderRadius:"50%", background:"#F5A623", border:"3px solid #fff", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 4px 16px rgba(245,166,35,0.6)", fontSize:20 }}>🚚</div>
+                </div>
+              </div>
+            </div>
+
+            {/* ORDER ITEMS CARD */}
+            <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", padding:"22px 24px", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+              <div style={{ fontSize:16, fontWeight:700, color:"#0D1F3C", marginBottom:20 }}>Order Items</div>
+              {items.map((item, i) => (
+                <div key={i} style={{ display:"flex", alignItems:"center", gap:16, padding:"16px 0", borderBottom: i < items.length-1 ? "1px solid #F3F4F6" : "none" }}>
+                  <div style={{ width:80, height:80, borderRadius:10, background:"#F9FAFB", border:"1px solid #E5E7EB", overflow:"hidden", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <img src={item.img} alt={item.name} style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e=>{e.target.style.display="none";}}/>
+                  </div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:15, fontWeight:700, color:"#0D1F3C", marginBottom:3 }}>{item.name}</div>
+                    <div style={{ fontSize:12, color:"#9CA3AF", marginBottom:3 }}>{item.variant}</div>
+                    <div style={{ fontSize:12, color:"#6B7280" }}>Quantity: {item.qty}</div>
+                  </div>
+                  <div style={{ textAlign:"right", flexShrink:0 }}>
+                    <div style={{ fontSize:17, fontWeight:800, color:"#0D1F3C" }}>{item.price}</div>
+                    <div style={{ fontSize:11, color:"#9CA3AF", marginTop:3 }}>SKU: {item.sku}</div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Footer total row */}
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:16, marginTop:4, borderTop:"1px solid #F3F4F6" }}>
+                <div style={{ fontSize:13, color:"#6B7280" }}>3 items total</div>
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <span style={{ fontSize:13, color:"#6B7280" }}>Total Paid</span>
+                  <span style={{ fontSize:20, fontWeight:800, color:"#F5A623" }}>$1,290.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+
+            {/* ESTIMATED DELIVERY CARD */}
+            <div style={{ background:"#F5A623", borderRadius:14, padding:"24px", boxShadow:"0 4px 16px rgba(245,166,35,0.3)" }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:"rgba(255,255,255,0.75)", marginBottom:10 }}>ESTIMATED DELIVERY</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:16 }}>
+                <span style={{ fontSize:36, fontWeight:800, color:"#fff", lineHeight:1 }}>Today</span>
+                <span style={{ fontSize:16, fontWeight:500, color:"rgba(255,255,255,0.85)" }}>by 5:00 PM</span>
+              </div>
+              <p style={{ fontSize:13, color:"rgba(255,255,255,0.85)", lineHeight:1.65 }}>
+                Your package is on its way with our premium courier and is currently 15 minutes away from your location.
+              </p>
+            </div>
+
+            {/* SHIPPING INFO CARD */}
+            <div style={{ background:"#fff", borderRadius:14, border:"1px solid #E5E7EB", padding:"22px", boxShadow:"0 1px 4px rgba(0,0,0,0.05)" }}>
+              <div style={{ fontSize:16, fontWeight:700, color:"#0D1F3C", marginBottom:20 }}>Shipping Information</div>
+              {[
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="#9CA3AF" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+                  label:"RECIPIENT",
+                  lines:["Sarah Andersson", "+45 23 45 67 89"],
+                },
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.75 4.5 8.5 4.5 8.5S12.5 9.75 12.5 6c0-2.485-2.015-4.5-4.5-4.5z" stroke="#9CA3AF" strokeWidth="1.5"/><circle cx="8" cy="6" r="1.5" stroke="#9CA3AF" strokeWidth="1.3"/></svg>,
+                  label:"DELIVERY ADDRESS",
+                  lines:["Østerbrogade 125, 3. th", "2100 Copenhagen Ø", "Denmark"],
+                },
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="#9CA3AF" strokeWidth="1.5"/><path d="M11 7h2l2 2.5V12h-4V7z" stroke="#9CA3AF" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="4" cy="13.5" r="1.5" stroke="#9CA3AF" strokeWidth="1.3"/><circle cx="12.5" cy="13.5" r="1.5" stroke="#9CA3AF" strokeWidth="1.3"/></svg>,
+                  label:"CARRIER",
+                  lines:["Nordic Express Premium", "Tracking: NEX-99228833"],
+                },
+              ].map((row,i) => (
+                <div key={i} style={{ display:"flex", gap:12, paddingBottom:16, marginBottom:16, borderBottom: i<2 ? "1px solid #F3F4F6" : "none" }}>
+                  <div style={{ width:32, height:32, borderRadius:8, background:"#F9FAFB", border:"1px solid #E5E7EB", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    {row.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize:10, fontWeight:700, letterSpacing:".1em", color:"#9CA3AF", marginBottom:5 }}>{row.label}</div>
+                    {row.lines.map((l,j) => (
+                      <div key={j} style={{ fontSize:13, fontWeight: j===0 ? 700 : 400, color: j===0 ? "#0D1F3C" : "#6B7280", lineHeight:1.5 }}>{l}</div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* NEED HELP CARD */}
+            <div style={{ background:"#FAFAFA", borderRadius:14, border:"1px solid #E5E7EB", padding:"22px", boxShadow:"0 1px 4px rgba(0,0,0,0.04)" }}>
+              <div style={{ fontSize:15, fontWeight:700, color:"#0D1F3C", marginBottom:6 }}>Need help?</div>
+              <p style={{ fontSize:13, color:"#9CA3AF", lineHeight:1.6, marginBottom:18 }}>
+                Our support team is available 24/7 for any queries regarding your delivery.
+              </p>
+              <button style={{ width:"100%", padding:"11px", background:"#F3F4F6", border:"1px solid #E5E7EB", borderRadius:8, fontSize:13, fontWeight:600, color:"#374151", cursor:"pointer", fontFamily:"inherit", marginBottom:10, transition:"background .15s" }}
+                onMouseEnter={e=>e.currentTarget.style.background="#E5E7EB"}
+                onMouseLeave={e=>e.currentTarget.style.background="#F3F4F6"}
+              >
+                Chat with Agent
+              </button>
+              <button style={{ width:"100%", padding:"10px", background:"transparent", border:"none", fontSize:13, fontWeight:600, color:"#F5A623", cursor:"pointer", fontFamily:"inherit" }}
+                onMouseEnter={e=>e.currentTarget.style.color="#DC9018"}
+                onMouseLeave={e=>e.currentTarget.style.color="#F5A623"}
+              >
+                Shipping Policy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    LOGIN PAGE
    ═══════════════════════════════════════════════════════════════════════════ */
 function LoginPage({ onNav, onTrackOrder }) {
@@ -1311,7 +1815,8 @@ function LoginPage({ onNav, onTrackOrder }) {
         <div style={{display:"flex",background:"#EDE8DE",borderRadius:10,padding:4,gap:4}}>
           {[["customer","Customer"],["staff","Staff(Designer)"]].map(([id,label])=>(
             <button key={id} onClick={()=>{setTab(id);setErr("");}}
-              style={{padding:"10px 32px",borderRadius:8,border:"none",background:tab===id?"#fff":"transparent",color:tab===id?"var(--tx)":"var(--t2)",fontWeight:tab===id?700:400,fontSize:14,fontFamily:"inherit",cursor:"pointer",boxShadow:tab===id?"0 1px 4px rgba(0,0,0,0.10)":"none",transition:"all .18s"}}>
+              style={{padding:"10px 32px",borderRadius:8,border:"none",background:tab===id?"#fff":"transparent",color:tab===id?"var(--tx)":"var(--t2)",fontWeight:tab===id?700:400,fontSize:14,fontFamily:"inherit",cursor:"pointer",boxShadow:tab===id?"0 1px 4px rgba(0,0,0,0.10)":"none",transition:"all .18s"}}
+            >
               {label}
             </button>
           ))}
@@ -1322,7 +1827,6 @@ function LoginPage({ onNav, onTrackOrder }) {
         <div style={{background:"#fff",borderRadius:16,boxShadow:"0 4px 24px rgba(0,0,0,0.08)",width:"100%",maxWidth:800,display:"grid",gridTemplateColumns:"1fr 1fr",overflow:"hidden"}}>
           {/* customer left */}
           <div style={{padding:36,borderRight:"1px solid var(--bd)"}}>
-            <div style={{width:46,height:46,borderRadius:"50%",background:"#EAF2FB",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:18,fontSize:22}}>🚚</div>
             <div style={{fontSize:20,fontWeight:800,marginBottom:8}}>Track &amp; Review Your Order</div>
             <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6,marginBottom:24}}>Enter your order number to see shipping status and order history.</div>
             <div style={{fontSize:13,fontWeight:500,marginBottom:8}}>Order Number</div>
@@ -1333,7 +1837,7 @@ function LoginPage({ onNav, onTrackOrder }) {
                 onFocus={e=>e.target.style.borderColor="var(--or)"}
                 onBlur={e=>e.target.style.borderColor="var(--b2)"}/>
             </div>
-            <button className="btn btn-or btn-full btn-lg" onClick={()=>{if(!orderNum){setErr("Enter order number");return;}onTrackOrder(orderNum);onNav("vizfeedback");}}>
+            <button className="btn btn-or btn-full btn-lg" onClick={()=>{if(!orderNum){setErr("Enter order number");return;}onTrackOrder(orderNum);onNav("aboutus");}}>
               View Order →
             </button>
             <div style={{textAlign:"center",marginTop:14,fontSize:13,color:"var(--t2)"}}>
@@ -1366,10 +1870,9 @@ function LoginPage({ onNav, onTrackOrder }) {
       </div>
       {/* hero image */}
       <div style={{marginTop:28,height:280,overflow:"hidden",position:"relative",flexShrink:0}}>
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=80" alt="" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
+        <img src="https://i.pinimg.com/1200x/f1/df/40/f1df40dcf1b4dc677560eb37d8b2f484.jpg" alt="" style={{width:"100%",height:280,objectFit:"cover",objectPosition:"center 75%"}}/>
         <div style={{position:"absolute",inset:0,background:"rgba(20,50,30,0.42)"}}/>
       </div>
-      <Footer/>
     </div>
   );
 }
@@ -1406,7 +1909,7 @@ function LoginSuccess({ onNav }) {
           </div>
         </div>
       </div>
-      <Footer/>
+     
     </div>
   );
 }
@@ -1516,9 +2019,9 @@ function NewProjectStep2({ onNav }) {
             {SHAPES.map(sh=>{
               const on=sel===sh.id;
               return (
-                <div key={sh.id} onClick={()=>setSel(sh.id)} style={{background:"#fff",borderRadius:12,padding:22,border:on?"2px solid var(--or)":"1.5px solid var(--bd)",cursor:"pointer",transition:"all .18s",boxShadow:on?"0 4px 20px rgba(245,166,35,.15)":"0 1px 4px rgba(0,0,0,.05)",position:"relative"}}>
-                  {on&&<div style={{position:"absolute",top:10,right:10,width:22,height:22,borderRadius:"50%",background:"var(--or)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <div key={sh.id} onClick={()=>setSel(sh.id)} style={{background:"#fff",borderRadius:12,padding:22,border:on?"2px solid var(--or)":"1.5px solid var(--bd)",cursor:"pointer",transition:"all .18s",boxShadow:on?"0 4px 20px rgba(245,166,35,.15)":"0 1px 4px rgba(0,0,0,.05)",position:"relative",zIndex:10}}>
+                  {on&&<div style={{position:"absolute",top:10,right:10,width:22,height:22,borderRadius:"50%",background:"var(--or)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1}}>
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6l3 3L11 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </div>}
                   <div style={{display:"flex",justifyContent:"center",marginBottom:14}}><ShapeIcon id={sh.id}/></div>
                   <div style={{fontSize:14,fontWeight:700,marginBottom:5}}>{sh.label}</div>
@@ -1587,7 +2090,8 @@ function NewProjectStep3({ onNav }) {
             </div>
             <div style={{display:"flex",gap:8}}>
               {cats.map(c=>(
-                <button key={c} onClick={()=>setCat(c)} style={{padding:"9px 20px",borderRadius:50,border:c===cat?"1.5px solid var(--or)":"1.5px solid var(--bd)",background:c===cat?"var(--or)":"#fff",color:c===cat?"#fff":"var(--tx)",fontSize:13,fontWeight:600,fontFamily:"inherit",cursor:"pointer",transition:"all .15s"}}>
+                <button key={c} onClick={()=>setCat(c)} style={{padding:"9px 20px",borderRadius:50,border:c===cat?"1.5px solid var(--or)":"1.5px solid var(--bd)",background:c===cat?"var(--or)":"#fff",color:c===cat?"#fff":"var(--tx)",fontSize:13,fontWeight:600,fontFamily:"inherit",cursor:"pointer",transition:"all .15s"}}
+                >
                   {c}
                 </button>
               ))}
@@ -1598,7 +2102,7 @@ function NewProjectStep3({ onNav }) {
             {filtered.map(item=>(
               <div key={item.id} style={{background:"#fff",borderRadius:14,overflow:"hidden",border:item.added?"2px solid var(--or)":"1.5px solid var(--bd)",transition:"all .18s",position:"relative",boxShadow:item.added?"0 4px 20px rgba(245,166,35,.12)":"0 1px 6px rgba(0,0,0,.05)"}}>
                 {item.added&&<div style={{position:"absolute",top:10,right:10,width:26,height:26,borderRadius:"50%",background:"var(--or)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1}}>
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l3 3L11 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6l3 3L11 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>}
                 <div style={{height:175,overflow:"hidden",background:"var(--cr)"}}>
                   <img src={item.img} alt={item.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .3s"}} onMouseEnter={e=>e.target.style.transform="scale(1.04)"} onMouseLeave={e=>e.target.style.transform="scale(1)"} onError={e=>{e.target.style.display="none";}}/>
@@ -1655,7 +2159,7 @@ export default function ComfortaApp() {
   // pages that use the sidebar shell
   const sidebarPages=["dashboard","feedback","export","settings","step2","step3","newproject"];
   // pages that are fully standalone (no sidebar, no topbar)
-  const standalonePages=["login","login-success","createaccount","vizfeedback","success","mydesigns","newproject","step1","step2","step3","roomeditor","roomviewer3d"];
+  const standalonePages=["login","login-success","createaccount","vizfeedback","success","mydesigns","newproject","step1","step2","step3","roomeditor","roomviewer3d","TrackOrder","checkout","AboutUs","aboutus"];
 
   function renderPage(){
     switch(page){
@@ -1686,6 +2190,7 @@ export default function ComfortaApp() {
           ...prev,
         ]);
       }} />;
+      case "TrackOrder":   return <TrackOrder onNav={nav}/>;
       case "feedback":     return <CustomerFeedback feedbackItems={feedbackItems}/>;
       case "checkout":     return <Checkout onNav={nav}/>;
       case "success":      return <PaymentSuccess onNav={nav}/>;
@@ -1697,27 +2202,13 @@ export default function ComfortaApp() {
         nav("roomviewer3d");
       }} />;
       case "roomviewer3d": return <RoomViewer3D items={viewerPayload.items} room={viewerPayload.room} onBackTo2D={() => nav(viewerReturnPage)} canExport={viewerReturnPage === "roomeditor"} onOpenExport={() => nav("export")} />;
+      case "aboutus":     return <AboutUs onNav={nav}/>;
       default:             return <LoginPage onNav={nav}/>;
     }
   }
 
   // Pages that manage their own full layout (sidebar inside component)
-  const selfContained=["login","login-success","createaccount","mydesigns","vizfeedback","success","newproject","step1","step2","step3","roomeditor","roomviewer3d"];
-
-  // Customer payment shell with simplified navigation
-  const paymentPages = ["checkout", "success"];
-  if(paymentPages.includes(page)){
-    return(
-      <>
-        <style>{G}</style>
-        <div className="app">
-          <PaymentSidebar active={page} onNav={nav}/>
-          <div className="main">{renderPage()}</div>
-        </div>
-      </>
-    );
-  }
-
+  const selfContained=["login","login-success","createaccount","mydesigns","vizfeedback","success","newproject","step1","step2","step3","roomeditor","roomviewer3d","TrackOrder","checkout","aboutus"];
   if(selfContained.includes(page)){
     return(
       <>
@@ -1726,7 +2217,6 @@ export default function ComfortaApp() {
       </>
     );
   }
-
   // Sidebar shell for designer pages
   return(
     <>
