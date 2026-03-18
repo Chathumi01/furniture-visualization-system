@@ -762,9 +762,21 @@ export default function RoomEditor({ onSwitch3D }) {
 
         {/* ── HEADER ── */}
         <header className="re-header">
-          <div className="re-logo"><img src={logoImg} alt="Comforta logo" className="re-logo-img" /> Comforta &nbsp;
-            <small style={{fontFamily:"DM Sans",fontSize:"11px",color:"var(--text3)",fontWeight:400}}>2D Room Editor</small>
-          </div>
+           <div style={{ background: "#FBF5E8", fontFamily: "'Inter', sans-serif", color: "#ffffff" }}>
+                                    <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB", padding: "0 40px", height: 60, display: "flex", alignItems: "center", gap: 12 }}>
+                                      <div
+                                        style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
+                     >
+                                        <div style={{ width: 36, height: 36, background: "#fff", borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                                          <img src={logoImg} alt="Comforta logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                                        </div>
+                                        <div>
+                                          <div style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>Comforta</div>
+                                          <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: ".15em", textTransform: "uppercase", color: "#9CA3AF" }}>Studio Library</div>
+                                        </div>
+                                      </div>
+                                      </div>
+                                      </div>
           <div className="re-header-actions">
             <button className="re-btn" onClick={() => {
               if (items.length === 0) return;
