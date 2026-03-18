@@ -781,7 +781,7 @@ function CreateAccount({ onNav }) {
     if(!f.pass||f.pass.length<6) e.pass="Minimum 6 characters";
     if(f.pass!==f.confirm) e.confirm="Passwords don't match";
     if(Object.keys(e).length){setErrs(e);return;}
-    onNav("dashboard");
+    onNav("login-success");
   }
   return (
     <div className="flex fdc" style={{minHeight:"100vh"}}>
