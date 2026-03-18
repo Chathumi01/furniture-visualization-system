@@ -815,7 +815,7 @@ function CreateAccount({ onNav }) {
             </div>
             <button className="btn btn-or btn-lg btn-full mt2" onClick={submit}>Create Account</button>
             <div style={{fontSize:13,color:"var(--t2)",textAlign:"center"}}>
-              Already have an account? <span style={{color:"var(--or)",fontWeight:600,cursor:"pointer"}} onClick={()=>onNav("dashboard")}>Sign In</span>
+              Already have an account? <span style={{color:"var(--or)",fontWeight:600,cursor:"pointer"}} onClick={()=>onNav("login")}>Sign In</span>
             </div>
           </div>
         </div>
